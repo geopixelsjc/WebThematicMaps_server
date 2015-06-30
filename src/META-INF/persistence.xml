@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<persistence-unit name="local-ip"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>geopixel.model.entities.Cidadao</class>
+		<class>geopixel.model.entities.EdificacoesPol</class>
+		<class>geopixel.model.entities.ElementoNome</class>
+		<class>geopixel.model.entities.ElementoTipo</class>
+		<class>geopixel.model.entities.Equipe</class>
+		<class>geopixel.model.entities.Ip</class>
+		<class>geopixel.model.entities.IpCompleto</class>
+		<class>geopixel.model.entities.LogLin</class>
+		<class>geopixel.model.entities.Logradouro</class>
+		<class>geopixel.model.entities.Lotes2</class>
+		<class>geopixel.model.entities.LotesPol</class>
+		<class>geopixel.model.entities.Material</class>
+		<class>geopixel.model.entities.Mg</class>
+		<class>geopixel.model.entities.Os</class>
+		<class>geopixel.model.entities.Sac</class>
+		<class>geopixel.model.entities.SpatialRefSy</class>
+		<class>geopixel.model.entities.Veiculo</class>
+
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/IP"></property>
+			<property name="javax.persistence.jdbc.user" value="postgres" />
+			<property name="javax.persistence.jdbc.password" value="geo@px2015" />
+			<property name="hibernate.dialect"
+				value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
+			<property name="hibernate.connection.shutdown" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
+		</properties>
+	</persistence-unit>
+	
+	<persistence-unit name="remote-ip"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>geopixel.model.entities.Cidadao</class>
+		<class>geopixel.model.entities.EdificacoesPol</class>
+		<class>geopixel.model.entities.ElementoNome</class>
+		<class>geopixel.model.entities.ElementoTipo</class>
+		<class>geopixel.model.entities.Equipe</class>
+		<class>geopixel.model.entities.Ip</class>
+		<class>geopixel.model.entities.IpCompleto</class>
+		<class>geopixel.model.entities.LogLin</class>
+		<class>geopixel.model.entities.Logradouro</class>
+		<class>geopixel.model.entities.Lotes2</class>
+		<class>geopixel.model.entities.LotesPol</class>
+		<class>geopixel.model.entities.Material</class>
+		<class>geopixel.model.entities.Mg</class>
+		<class>geopixel.model.entities.Os</class>
+		<class>geopixel.model.entities.Sac</class>
+		<class>geopixel.model.entities.SpatialRefSy</class>
+		<class>geopixel.model.entities.Veiculo</class>
+
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://74.208.229.211:5432/IP"></property>
+			<property name="javax.persistence.jdbc.user" value="postgres" />
+			<property name="javax.persistence.jdbc.password" value="geo@px2015" />
+			<property name="hibernate.dialect"
+				value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
+			<property name="hibernate.connection.shutdown" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
+		</properties>
+	</persistence-unit>
+
+</persistence>

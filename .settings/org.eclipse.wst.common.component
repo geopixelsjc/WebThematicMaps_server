@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="terracore-server-piracicaba">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <property name="context-root" value="terracore-server-piracicaba"/>
+        <property name="java-output-path" value="/terracore-server-piracicaba/build/classes"/>
+    </wb-module>
+</project-modules>
