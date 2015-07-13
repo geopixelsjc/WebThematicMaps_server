@@ -1,7 +1,5 @@
 package geopixel.service; 
 
-import geopixel.utils.PropertiesReader;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,17 +17,14 @@ public class DataBaseService {
 	private static Statement stm;
 	private static ResultSet rs;
 
-	public void setProperties() throws IOException {
-		host = PropertiesReader.getDBProp().getProperty("prop.db.host").toString();
-		user = PropertiesReader.getDBProp().getProperty("prop.db.user").toString();
-		password = PropertiesReader.getDBProp().getProperty("prop.db.password").toString();
-		database = PropertiesReader.getDBProp().getProperty("prop.db.database").toString();
-		port = PropertiesReader.getDBProp().getProperty("prop.db.port").toString();
-	}
-
-	public Connection connect() throws IOException {
-		DataBaseService service = new DataBaseService();
-		service.setProperties();
+	public static Connection connect() throws IOException {
+		
+		host = "localhost";//PropertiesReader.getDBProp().getProperty("prop.db.host").toString();
+		user = "postgres";//PropertiesReader.getDBProp().getProperty("prop.db.user").toString();
+		password ="postgres";//PropertiesReader.getDBProp().getProperty("prop.db.password").toString();
+		database ="piracicaba";//PropertiesReader.getDBProp().getProperty("prop.db.database").toString();
+		port = "5432";//PropertiesReader.getDBProp().getProperty("prop.db.port").toString();
+		
 		try {
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection("jdbc:postgresql://" + host + ":" + port + "/" 
@@ -46,8 +41,7 @@ public class DataBaseService {
 	}
 
 	public static ResultSet buildSelect(String sql) throws IOException {
-		DataBaseService service = new DataBaseService();
-		service.connect();
+		DataBaseService.connect();
 		try {
 			stm = conn.createStatement();
 			rs = stm.executeQuery(sql);

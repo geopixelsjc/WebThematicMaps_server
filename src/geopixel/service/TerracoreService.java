@@ -2,12 +2,18 @@ package geopixel.service;
  
 import geopixel.model.geolocation.Endereco;
 import geopixel.model.geolocation.Geometry;
-import geopixel.utils.PropertiesReader;
+import geopixel.model.legacy.bo.AcessoBo;
+import geopixel.model.legacy.dto.Acesso;
+import geopixel.utils.Cryptography;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.crypto.NoSuchPaddingException;
 
 public class TerracoreService {
 
@@ -19,6 +25,8 @@ public class TerracoreService {
 	
 	private static String streetColumn;
 	private static String tSpatialColumn;
+	
+	
 
 	public TerracoreService() throws IOException {
 		lotTable = "geo_lote";//PropertiesReader.getSearchProp().getProperty("prop.search.lotTable");
@@ -28,6 +36,56 @@ public class TerracoreService {
 		
 		streetTable = "geo_eixo";//PropertiesReader.getSearchProp().getProperty("prop.search.streetTable");
 		streetColumn = "nome";//PropertiesReader.getSearchProp().getProperty("prop.search.streetColumn");
+	}
+	
+	public static boolean checkKey(String key) throws IOException, SQLException{
+		boolean valid = false;
+		String sql = "select * from app_acesso where chave = '"+key+"'";
+		ResultSet rs = DataBaseService.buildSelect(sql);
+		valid = rs.next();
+		return valid;
+	}
+	
+	public static Acesso login(String login, String password) throws IOException, SQLException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException{
+		boolean valid = false;
+		Acesso acesso = new Acesso();	
+		
+		String sql = "select * from app_acesso where login = '"+login+"' and senha = '"+password+"'";
+		ResultSet rs = DataBaseService.buildSelect(sql);
+		valid = rs.next();
+		
+			if(valid){
+				acesso.setAscId(rs.getInt("asc_id"));
+				acesso.setNome(rs.getString("nome"));
+				acesso.setLogin(rs.getString("login"));
+				acesso.setSenha(rs.getString("senha"));
+				
+				if(rs.getString("chave") == null){
+					String key = generateAccessKey(acesso);
+					acesso.setChave(key);
+				}
+				else{
+					acesso.setChave(rs.getString("chave"));
+				}
+			}
+			
+		return acesso;
+	}
+	
+	public static String generateAccessKey(Acesso entidade) throws NoSuchAlgorithmException{
+		AcessoBo acessoBo =  new AcessoBo();
+		Acesso acesso = new Acesso();
+		Cryptography c = new Cryptography();
+		String chave = c.generateHashMD5(entidade.getLogin()+entidade.getSenha());
+		
+		acesso.setAscId(entidade.getAscId());
+		acesso.setLogin(entidade.getLogin());
+		acesso.setNome(entidade.getNome());
+		acesso.setSenha(entidade.getSenha());
+		acesso.setChave(chave);
+		
+		acessoBo.saveOrUpdate(acesso);
+		return chave;
 	}
 
 
