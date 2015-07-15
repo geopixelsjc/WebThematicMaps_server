@@ -4,6 +4,10 @@ import geopixel.model.geolocation.Endereco;
 import geopixel.model.geolocation.Geometry;
 import geopixel.model.legacy.bo.AcessoBo;
 import geopixel.model.legacy.dto.Acesso;
+import geopixel.model.legacy.dto.Camada;
+import geopixel.model.legacy.dto.Funcao;
+import geopixel.model.legacy.dto.Perfil;
+import geopixel.model.legacy.dto.Tema;
 import geopixel.utils.Cryptography;
 
 import java.io.IOException;
@@ -27,8 +31,10 @@ public class TerracoreService {
 	private static String tSpatialColumn;
 	
 	
-
 	public TerracoreService() throws IOException {
+		/**
+		 * TODO: xml de propiedades
+		 */
 		lotTable = "geo_lote";//PropertiesReader.getSearchProp().getProperty("prop.search.lotTable");
 		lotColumn1 = "chave";//PropertiesReader.getSearchProp().getProperty("prop.search.lotColumn1");
 		lotColumn2 = "chave";//PropertiesReader.getSearchProp().getProperty("prop.search.lotColumn2");
@@ -36,6 +42,49 @@ public class TerracoreService {
 		
 		streetTable = "geo_eixo";//PropertiesReader.getSearchProp().getProperty("prop.search.streetTable");
 		streetColumn = "nome";//PropertiesReader.getSearchProp().getProperty("prop.search.streetColumn");
+	}
+	public static ArrayList<Tema> getThemesByKey(String key) throws IOException, SQLException{
+		
+		ArrayList<Tema> temas = new ArrayList<Tema>();
+		
+		String sqlPerfil = "select p.perfil "+  
+				"from app_acesso a, app_usuario u, app_usarioxprefil up, app_perfil p "+
+				"where a.usr_id = u.usr_id "+
+				"and u.usr_id = up.usr_id "+
+				"and up.prf_id = p.prf_id "+
+				"and a.chave ='"+key+"'";
+		
+		ResultSet rsp = DataBaseService.buildSelect(sqlPerfil);
+		
+		String sqltheme = "select t.nome_tema, t.titulo_tema, t.descricao "+ 
+				"from app_acesso a, app_usuario u, app_usarioxprefil up, app_perfil p, app_tema t "+
+				"where a.usr_id = u.usr_id "+
+				"and u.usr_id = up.usr_id "+
+				"and up.prf_id = p.prf_id "+
+				"and p.prf_id = t.prf_id "+
+				"and a.chave ='"+key+"'";
+		
+		ResultSet rst = DataBaseService.buildSelect(sqltheme);
+		
+		while (rst.next()){
+			Tema tema = new Tema();
+			tema.setNomeTema(rst.getString(1));
+			tema.setTituloTema(rst.getString(2));
+			tema.setDescricao(rst.getString(3));
+			temas.add(tema);
+		}
+		
+		return temas;
+		
+	}
+	public static Funcao getUserFunctions(){
+		
+		return null;
+	}
+	
+	public static Perfil getUserProfile(){
+		
+		return null;
 	}
 	
 	public static boolean checkKey(String key) throws IOException, SQLException{

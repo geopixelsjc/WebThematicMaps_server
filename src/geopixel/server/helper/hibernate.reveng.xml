@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+
+<table-filter match-name="app_acesso"/>
+  <table-filter match-name="app_camada"/>
+  <table-filter match-name="app_dicionario_dado"/>
+  <table-filter match-name="app_documento_digital"/>
+  <table-filter match-name="app_endereco"/>
+  <table-filter match-name="app_funcao"/>
+  <table-filter match-name="app_perfil"/>
+  <table-filter match-name="app_permissao"/>
+  <table-filter match-name="app_tabela"/>
+  <table-filter match-name="app_tema"/>
+  <table-filter match-name="app_usarioxprefil"/>
+  <table-filter match-name="app_usuario"/>
+</hibernate-reverse-engineering>

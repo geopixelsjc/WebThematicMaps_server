@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory>
+  <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+  <property name="hibernate.connection.password">postgres</property>
+  <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/piracicaba</property>
+  <property name="hibernate.connection.username">postgres</property>
+  <property name="hibernate.default_schema">public</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+  <property name="hibernate.search.autoregister_listeners">false</property>
+  <property name="hibernate.validator.apply_to_ddl">false</property>
+  <mapping class="geopixel.model.hb.dto.AppDicionarioDado"/>
+  <mapping class="geopixel.model.hb.dto.AppDocumentoDigital"/>
+  <mapping class="geopixel.model.hb.dto.AppUsuario"/>
+  <mapping class="geopixel.model.hb.dto.AppTabela"/>
+  <mapping class="geopixel.model.hb.dto.AppPermissao"/>
+  <mapping class="geopixel.model.hb.dto.AppCamada"/>
+  <mapping class="geopixel.model.hb.dto.AppAcesso"/>
+  <mapping class="geopixel.model.hb.dto.AppUsarioxprefil"/>
+  <mapping class="geopixel.model.hb.dto.AppEndereco"/>
+  <mapping class="geopixel.model.hb.dto.AppTema"/>
+  <mapping class="geopixel.model.hb.dto.AppFuncao"/>
+  <mapping class="geopixel.model.hb.dto.AppPerfil"/>
+ </session-factory>
+</hibernate-configuration>

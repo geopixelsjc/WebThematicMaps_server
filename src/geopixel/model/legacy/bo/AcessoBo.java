@@ -19,7 +19,6 @@ public class AcessoBo {
 		}
 
 	}
-
 	
 	public void delete(Acesso entidade) {
 		

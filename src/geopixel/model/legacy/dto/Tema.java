@@ -28,19 +28,19 @@ public class Tema implements Serializable {
 	private String descricao;
 
 	/** app_perfil. */
-	private Perfil appPerfil;
+	private Perfil Perfil;
 
 	/** app_camada. */
-	private Camada appCamada;
+	private Camada Camada;
 
 	/** The set of app_permissao. */
-	private Set<Permissao> appPermissaoSet;
+	private Set<Permissao> PermissaoSet;
 
 	/**
 	 * Constructor.
 	 */
 	public Tema() {
-		this.appPermissaoSet = new HashSet<Permissao>();
+		this.PermissaoSet = new HashSet<Permissao>();
 	}
 
 	/**
@@ -120,13 +120,13 @@ public class Tema implements Serializable {
 	}
 
 	/**
-	 * Set the app_perfil.
+	 * Set the perfil.
 	 * 
 	 * @param appPerfil
 	 *            app_perfil
 	 */
-	public void setAppPerfil(Perfil appPerfil) {
-		this.appPerfil = appPerfil;
+	public void setPerfil(Perfil perfil) {
+		this.Perfil = perfil;
 	}
 
 	/**
@@ -134,8 +134,8 @@ public class Tema implements Serializable {
 	 * 
 	 * @return app_perfil
 	 */
-	public Perfil getAppPerfil() {
-		return this.appPerfil;
+	public Perfil getPerfil() {
+		return this.Perfil;
 	}
 
 	/**
@@ -144,8 +144,8 @@ public class Tema implements Serializable {
 	 * @param appCamada
 	 *            app_camada
 	 */
-	public void setAppCamada(Camada appCamada) {
-		this.appCamada = appCamada;
+	public void setCamada(Camada camada) {
+		this.Camada = camada;
 	}
 
 	/**
@@ -153,8 +153,8 @@ public class Tema implements Serializable {
 	 * 
 	 * @return app_camada
 	 */
-	public Camada getAppCamada() {
-		return this.appCamada;
+	public Camada getCamada() {
+		return this.Camada;
 	}
 
 	/**
@@ -163,8 +163,8 @@ public class Tema implements Serializable {
 	 * @param appPermissaoSet
 	 *            The set of app_permissao
 	 */
-	public void setAppPermissaoSet(Set<Permissao> appPermissaoSet) {
-		this.appPermissaoSet = appPermissaoSet;
+	public void setPermissaoSet(Set<Permissao> appPermissaoSet) {
+		this.PermissaoSet = appPermissaoSet;
 	}
 
 	/**
@@ -173,8 +173,8 @@ public class Tema implements Serializable {
 	 * @param appPermissao
 	 *            app_permissao
 	 */
-	public void addAppPermissao(Permissao appPermissao) {
-		this.appPermissaoSet.add(appPermissao);
+	public void addPermissao(Permissao permissao) {
+		this.PermissaoSet.add(permissao);
 	}
 
 	/**
@@ -182,8 +182,8 @@ public class Tema implements Serializable {
 	 * 
 	 * @return The set of app_permissao
 	 */
-	public Set<Permissao> getAppPermissaoSet() {
-		return this.appPermissaoSet;
+	public Set<Permissao> getPermissaoSet() {
+		return this.PermissaoSet;
 	}
 
 	/**

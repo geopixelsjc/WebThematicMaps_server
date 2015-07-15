@@ -119,7 +119,7 @@ public class Camada implements Serializable {
 	 * @param appTemaSet
 	 *            The set of app_tema
 	 */
-	public void setAppTemaSet(Set<Tema> appTemaSet) {
+	public void setTemaSet(Set<Tema> appTemaSet) {
 		this.appTemaSet = appTemaSet;
 	}
 
@@ -129,7 +129,7 @@ public class Camada implements Serializable {
 	 * @param appTema
 	 *            app_tema
 	 */
-	public void addAppTema(Tema appTema) {
+	public void addTema(Tema appTema) {
 		this.appTemaSet.add(appTema);
 	}
 
@@ -138,7 +138,7 @@ public class Camada implements Serializable {
 	 * 
 	 * @return The set of app_tema
 	 */
-	public Set<Tema> getAppTemaSet() {
+	public Set<Tema> getTemaSet() {
 		return this.appTemaSet;
 	}
 

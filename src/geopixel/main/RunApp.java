@@ -1,9 +1,13 @@
 package geopixel.main;
 
-import geopixel.service.TerracoreService;
+import geopixel.model.hb.dao.AppTemaDAO;
+import geopixel.model.hb.dao.AppUsuarioDAO;
+import geopixel.model.hb.dto.AppAcesso;
+import geopixel.model.hb.dto.AppPermissao;
+import geopixel.model.hb.dto.AppTema;
+import geopixel.model.hb.dto.AppUsuario;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import java.util.Iterator;
 
 
 public class RunApp { 
@@ -25,11 +29,42 @@ public class RunApp {
 //			e.printStackTrace();
 //		}
 //		
-		
+	
+//	AppAcesso acesso = new AppAcesso();
+//	AppUsuario usuario = new AppUsuario();
+//	acesso.setAscId(2200);
+//	acesso.setNome("inacio");
+//	acesso.setLogin("in@cio");
+//	acesso.setSenha("a7a567");
+//	usuario.setUsrId(2200);
+//	usuario.setNome("INACIO");
+//	
+//	acesso.setAppUsuario(usuario);
+	
+	
+//	AppAcessoDAO dao = new AppAcessoDAO(AppAcesso.class);
+//	dao.persist(acesso);
+	
+	AppUsuario usuario = new AppUsuario();
+	//usuario.setUsrId(2200);
+	usuario.setNome("INACIO2");
+	
+	AppTemaDAO dao = new AppTemaDAO(AppTema.class);
 	try {
-		System.out.println(TerracoreService.checkKey("a760cc1f7f4451240dc5deab2eddc554"));
-	} catch (IOException | SQLException e) {
+		//dao.persist(usuario);
+		//access via Iterator
+		Iterator<?> iterator = dao.getByID(1).getAppPermissaos().iterator();
+		
+		while(iterator.hasNext()){
+			
+		  AppPermissao element = (AppPermissao) iterator.next();
+		  System.out.println(element.getPermit());
+		}
+		
+		System.out.println();
+	} catch (Exception e) {
 		e.printStackTrace();
 	}
+		
 	}
 }

@@ -46,10 +46,9 @@ public class AcessoDao implements GenericDao<Acesso>{
 				 conn.commit();
 			 }else{
 				 conn.rollback();
-			 }
-			 
-			 conn.close();
+			 }			 
 		}
+		 conn.close();
 	}
 
 	@Override
