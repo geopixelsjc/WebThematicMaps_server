@@ -19,7 +19,8 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "app_usarioxprefil")
-public class AppUsarioxprefil implements java.io.Serializable {
+
+public class AppUsarioxprefil implements java.io.Serializable{
 
 	private AppUsarioxprefilId id;
 	private AppUsuario appUsuario;

@@ -1,9 +1,12 @@
 package geopixel.rest;
  
+import geopixel.model.external.GenericTable;
 import geopixel.model.geolocation.Endereco;
 import geopixel.model.geolocation.Geometry;
+import geopixel.model.hb.dto.AppDicionarioDado;
+import geopixel.model.hb.dto.AppTabela;
+import geopixel.model.hb.dto.AppTema;
 import geopixel.model.legacy.dto.Acesso;
-import geopixel.model.legacy.dto.Tema;
 import geopixel.service.TerracoreService;
 
 import java.io.IOException;
@@ -15,11 +18,11 @@ import java.util.ArrayList;
 import javax.crypto.NoSuchPaddingException;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.MatrixParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -27,11 +30,73 @@ import javax.ws.rs.core.Response;
 public class JSONService {
 	
 	@GET
-	@Path("/theme/{param}")
+	@Path("/userTableData")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public ArrayList<Tema> getThemeByKey(@PathParam("param") String key) {
+	public GenericTable getPhysicalTable(
+			@QueryParam("tabela_id") int tabela_id,
+			@QueryParam("nomeTabela") String nomeTabela,
+			@QueryParam("conexao") String conn,
+			@QueryParam("limit") int limit,
+			@QueryParam("offset") int offset) {
 
-		ArrayList<Tema> temas = new ArrayList<Tema>();
+		GenericTable table = new GenericTable();
+		AppTabela tabela = new AppTabela();
+		tabela.setTblId(tabela_id);
+		tabela.setNome(nomeTabela);
+		tabela.setUrlConexaoBanco(conn);
+			
+		try {
+			table = TerracoreService.getPhysicalTable(tabela, limit, offset);
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+			
+		return table;
+	}
+	
+	@GET
+	@Path("/userTables")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public ArrayList<AppTabela> getUserTable(
+			@QueryParam("theme_id") int theme_id ) {
+
+		ArrayList<AppTabela> tabelas = new ArrayList<AppTabela>();
+
+			try {
+				tabelas = TerracoreService.getUserTableByThemeId(theme_id);
+			} catch (IOException | SQLException e) {
+				e.printStackTrace();
+			}
+	
+		return tabelas;
+	}
+	
+	@GET
+	@Path("/tableDataDictionaries")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public ArrayList<AppDicionarioDado> UserTableDataDictionaries(
+		@QueryParam("table_id") int table_id) {
+
+			ArrayList<AppDicionarioDado> dicionarioDados = new ArrayList<AppDicionarioDado>();
+			AppTabela tabela = new AppTabela();
+			tabela.setTblId(table_id);
+
+		try {
+			dicionarioDados = TerracoreService.getTableAttributesDD(tabela);
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+	
+		return dicionarioDados;
+	}
+	
+	
+	@GET
+	@Path("/themesByKey/{param}")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public ArrayList<AppTema> getThemeByKey(@PathParam("param") String key) {
+
+		ArrayList<AppTema> temas = new ArrayList<AppTema>();
 
 			try {
 				temas = TerracoreService.getThemesByKey(key);
@@ -44,8 +109,8 @@ public class JSONService {
 	
 	
 	@GET
-	@Path("/checkKeyinSession/{key}")
-	public Response checkKey(@MatrixParam("key") String key) {
+	@Path("/checkKeyinSession/{param}")
+	public Response checkKey(@PathParam("param") String key) {
 		boolean valid = false;
 		try {
 			valid = TerracoreService.checkKey(key);

@@ -13,9 +13,10 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/postgresql-9.1-901.jdbc4.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/postgresql-9.1-901.jdbc4.jar" sourcepath="C:/Users/inacio/.m2/repository/postgresql/postgresql/9.1-901.jdbc4/postgresql-9.1-901.jdbc4-sources.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.ejb-3.1.2.2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-logging-1.2/commons-logging-1.2-javadoc.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-logging-1.2/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jackson-all-1.9.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

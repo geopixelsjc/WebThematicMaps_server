@@ -12,7 +12,7 @@ public class AcessoDao implements GenericDao<Acesso>{
 
 	@Override
 	public void saveOrUpdate(Acesso entidade) throws IOException, SQLException {
-		Connection conn = DataBaseService.connect();
+		Connection conn = DataBaseService.connect(DataBaseService.getPostgresParameters());
 		conn.setAutoCommit(false);
 		
 		//save

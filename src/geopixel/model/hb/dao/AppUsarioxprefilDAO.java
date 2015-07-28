@@ -3,6 +3,8 @@ package geopixel.model.hb.dao;
 // default package
 // Generated 15/07/2015 10:53:57 by Hibernate Tools 4.0.0
 
+import java.io.Serializable;
+
 import geopixel.model.hb.dto.AppUsarioxprefil;
 import geopixel.model.hb.dto.AppUsarioxprefilId;
 import geopixel.server.helper.HibernateUtil;
@@ -98,7 +100,7 @@ public class AppUsarioxprefilDAO extends GenericDAOHibernate<AppUsarioxprefil> {
 		try {
 			
 			transaction = session.beginTransaction();
-			AppUsarioxprefil instance = (AppUsarioxprefil) session.get(AppUsarioxprefil.class, id);
+			AppUsarioxprefil instance = (AppUsarioxprefil) session.get(AppUsarioxprefil.class, (Serializable) id);
 			transaction.commit();
 			log.debug("get successful");
 			return instance;

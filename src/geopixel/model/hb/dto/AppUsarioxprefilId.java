@@ -11,6 +11,7 @@ import javax.persistence.Embeddable;
  */
 @SuppressWarnings("serial")
 @Embeddable
+
 public class AppUsarioxprefilId implements java.io.Serializable {
 
 	private int prfId;

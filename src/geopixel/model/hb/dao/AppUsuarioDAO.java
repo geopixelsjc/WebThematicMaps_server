@@ -7,8 +7,6 @@ import geopixel.model.hb.dto.AppUsuario;
 import geopixel.server.helper.HibernateUtil;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,7 +18,6 @@ import org.hibernate.Transaction;
  * @see .AppUsuario
  * @author Hibernate Tools
  */
-@SuppressWarnings("serial")
 @Stateless
 public class AppUsuarioDAO extends GenericDAOHibernate<AppUsuario>{
 
@@ -29,22 +26,22 @@ public class AppUsuarioDAO extends GenericDAOHibernate<AppUsuario>{
 		// TODO Auto-generated constructor stub
 	}
 
-	private static final Log log = LogFactory.getLog(AppUsuarioDAO.class);
+	//private static final Log log = LogFactory.getLog(AppUsuarioDAO.class);
 
 	private Session session;
 
 	public void persist(AppUsuario transientInstance) {
-		log.debug("persisting AppUsuario instance");
+		//log.debug("persisting AppUsuario instance");
 		Transaction transaction = null;
 		session = getSession();
 		try {
 			transaction = session.beginTransaction();
 			session.save(transientInstance);
 			transaction.commit();
-			log.debug("persist successful");
+			//log.debug("persist successful");
 		} catch (RuntimeException re) {
 			transaction.rollback();
-			log.error("persist failed", re);
+			//log.error("persist failed", re);
 			throw re;
 		}finally{
 			session.close();
@@ -52,17 +49,17 @@ public class AppUsuarioDAO extends GenericDAOHibernate<AppUsuario>{
 	}
 
 	public void remove(AppUsuario persistentInstance) {
-		log.debug("removing AppUsuario instance");
+		//log.debug("removing AppUsuario instance");
 		Transaction transaction = null;
 		session = getSession();
 		try {
 			transaction = session.beginTransaction();
 			session.delete(persistentInstance);
 			transaction.commit();
-			log.debug("remove successful");
+			//log.debug("remove successful");
 		} catch (RuntimeException re) {
 			transaction.rollback();
-			log.error("remove failed", re);
+			//log.error("remove failed", re);
 			throw re;
 		}finally{
 			session.close();
@@ -70,18 +67,18 @@ public class AppUsuarioDAO extends GenericDAOHibernate<AppUsuario>{
 	}
 
 	public AppUsuario merge(AppUsuario detachedInstance) {
-		log.debug("merging AppUsuario instance");
+		//log.debug("merging AppUsuario instance");
 		Transaction transaction = null;
 		session = getSession();
 		try {
 			transaction = session.beginTransaction();
 			AppUsuario result = (AppUsuario) session.merge(detachedInstance);
 			transaction.commit();
-			log.debug("merge successful");
+			//log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
 			transaction.rollback();
-			log.error("merge failed", re);
+			//log.error("merge failed", re);
 			throw re;
 		}finally{
 			session.close();
@@ -89,17 +86,17 @@ public class AppUsuarioDAO extends GenericDAOHibernate<AppUsuario>{
 	}
 
 	public AppUsuario findById(int id) {
-		log.debug("getting AppUsuario instance with id: " + id);
+		//log.debug("getting AppUsuario instance with id: " + id);
 		Transaction transaction = null;
 		session = getSession();
 		try {
 			transaction = session.beginTransaction();
 			AppUsuario instance = (AppUsuario) session.get(AppUsuario.class, id);
 			transaction.commit();
-			log.debug("get successful");
+			//log.debug("get successful");
 			return instance;
 		} catch (RuntimeException re) {
-			log.error("get failed", re);
+			//log.error("get failed", re);
 			transaction.rollback();
 			throw re;
 		}finally{
