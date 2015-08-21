@@ -1,0 +1,43 @@
+package geopixel.thematic;
+
+import geopixel.service.DataBaseService;
+
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class Dao {
+        
+        public static ResultSet getCityGeoJSON() throws IOException, SQLException{
+                
+                String sqlQuery = "SELECT " +
+                                "data.id, " +
+                                "data.cd_geocod_uf, " +
+                                "data.nm_uf, " +
+                                "data.nm_uf_sigla, " +
+                                "data.cd_geocodigo, " +
+                                "data.nm_mun_2013, " +
+                                "data.area_2013_km2, " +
+                                "geometry.gid, " +
+                                "geometry.id, " +
+                                "geometry.nm_municip, " +
+                                "geometry.geom " +
+                                "FROM " +
+                                "city_geometry geometry, " +
+                                "city_information data " +
+                                "WHERE data.cd_geocodigo = CAST(geometry.cd_geocodm AS bigint) " +
+                                "LIMIT 3;";
+                
+                ResultSet resultSet = DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
+                
+                return resultSet;                
+        }       
+        
+        
+        public static ResultSet getFakeQuantil() throws IOException, SQLException{
+                String sqlQuery = "select * from city_information where nm_uf_sigla = 'SP' order by area_2013_km2;";                
+                ResultSet resultSet = DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
+                return resultSet;                
+        }              
+        
+}
