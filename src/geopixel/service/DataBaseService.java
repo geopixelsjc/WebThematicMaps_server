@@ -25,8 +25,8 @@ public class DataBaseService {
 		dataBase.setHost("localhost");
 		dataBase.setPort("5432");
 		dataBase.setUser("postgres");
-		dataBase.setPassword("postgres");
-		dataBase.setDatabase("piracicaba");
+		dataBase.setPassword("123");
+		dataBase.setDatabase("geo");
 		dataBase.setDataBaseTypeEnum(DataBaseTypeEnum.POSTGRES);
 		return dataBase;
 	}
