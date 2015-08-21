@@ -1,10 +1,12 @@
 package geopixel.thematic;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -26,14 +28,13 @@ public class Controller {
                                         String attributeName,
                                         Double attributeValue) throws JSONException {
                 // for no geojson e aplicar quando a area for menor que ...
-                //                Double value = geojson.getDouble(attributeName);
-                //                Double value2 = geojson.getDouble(attributeName);
-                //                
-                //                getColorForProperty(range, value);
-                //                
-                //                if (value < attributeValue) {
-                //                        geojson.put("color", color);
-                //                }
+//                Double value = geojson.getDouble(attributeName);
+//                
+//                getColorForProperty(range, value);
+//                
+//                if (value < attributeValue) {
+//                        geojson.put("color", color);
+//                }
                 
         }
         
@@ -45,6 +46,18 @@ public class Controller {
                         
                 }
                 
+        }
+        
+        public Color generateRandomColor() {
+                Random rand = new Random();
+                
+                float r = rand.nextFloat();
+                float g = rand.nextFloat();
+                float b = rand.nextFloat();
+                
+                Color randomColor = new Color(r, g, b);
+                
+                return randomColor;
         }
         
         public List<Double> calculateRanges(double[] values, int breaks) {
@@ -65,10 +78,14 @@ public class Controller {
                                 break;
                         }
                         
-                        ranges.add(values[count - 1]);                        
+                        ranges.add(values[count - 1]);
                 }
                 
                 return ranges;
+        }
+        
+        public void mergeInformationsToGeoJSON() {
+                
         }
         
 }
