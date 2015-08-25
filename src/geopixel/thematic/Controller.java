@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.TreeSet;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -20,11 +21,13 @@ public class Controller {
                                        Integer classesNumber,
                                        String attributeName,
                                        String attributeValue) throws IOException, SQLException, JSONException {
+                                
+                List<Double> ranges = generateRanges();
                 
-                ResultSet resultSet = Dao.getFakeQuantil();
+                ResultSet geoJsonResultSet = Dao.getFakeQuantil();
                 
-                while (resultSet.next()) {
-                        String jsonString = resultSet.getString(1);
+                while (geoJsonResultSet.next()) {
+                        String jsonString = geoJsonResultSet.getString(1);
                         JSONObject obj = new JSONObject(jsonString);
                         JSONArray features = obj.getJSONArray("features");
                         
@@ -37,6 +40,21 @@ public class Controller {
                         
                 }
                 return null;
+        }
+        
+        public List<Double> generateRanges() throws SQLException, IOException {
+                ResultSet areasResultSet = Dao.getAreas();
+                TreeSet<Double> areas = new TreeSet<Double>();
+                
+                while (areasResultSet.next()) {
+                        Double area = areasResultSet.getDouble(1);
+                        areas.add(area);
+                }
+                
+                Double[] areasArray = areas.toArray(new Double[areas.size()]);
+                List<Double> calculatedRanges = calculateRanges(areasArray, 4);
+                
+                return calculatedRanges;
         }
         
         public void applyColorToGeoJSON(
@@ -82,7 +100,7 @@ public class Controller {
                 return randomColor;
         }
         
-        public List<Double> calculateRanges(double[] values, int breaks) {
+        public List<Double> calculateRanges(Double[] values, int breaks) {
                 int size = values.length;
                 int breakSize = size / breaks;
                 int count = 0;
@@ -113,8 +131,8 @@ public class Controller {
          *                of colors.
          * @return {@link HashMap}<String, List<Double>>
          * 
-         *      String - represents the color in hexadecimal
-         *      List<Double> - the ranges that this color will be applied
+         *         String - represents the color in hexadecimal List<Double> -
+         *         the ranges that this color will be applied
          */
         public HashMap<String, List<Double>> generateColorsByRange(
                                                                    List<Double> ranges) {

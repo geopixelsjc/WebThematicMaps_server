@@ -30,7 +30,7 @@ public class TestThematicController {
         public void testCalculateRanges() {
                 assertNotNull(controller);
                 
-                double[] values = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                Double[] values = { 1.0, 2., 3., 4., 5., 6., 7., 8., 9., 10. };
                 int breaks = 2;
                 List<Double> result = controller.calculateRanges(values, breaks);
                 assertNotNull(result);
@@ -38,7 +38,7 @@ public class TestThematicController {
         
         @Test
         public void testGenerateColorsByRange() {
-                double[] values = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                Double[] values = { 1., 2., 3., 4., 5., 6., 7., 8., 9., 10. };
                 int breaks = 4;
                 List<Double> calculatedRanges = controller.calculateRanges(values, breaks);
                 assertNotNull(calculatedRanges);
