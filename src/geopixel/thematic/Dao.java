@@ -68,6 +68,12 @@ public class Dao {
                 
                 ResultSet resultSet = DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
                 return resultSet;                
-        }              
+        }   
+        
+        public static ResultSet getAreas() throws IOException, SQLException {
+                String sqlQuery = "select area_2013_km2 from city_information where nm_uf_sigla = 'SP' order by area_2013_km2;";
+                ResultSet resultSet = DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
+                return resultSet;
+        }
         
 }

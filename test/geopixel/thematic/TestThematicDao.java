@@ -37,10 +37,16 @@ public class TestThematicDao {
                                 JSONObject feature = features.getJSONObject(i);
                                 JSONObject properties = feature.getJSONObject("properties");
                                 Double area = properties.getDouble("area_2013_km2");
-                                assertNotNull(area);                                        
+                                assertNotNull(area);
                                 System.out.println(area);
                         }
                         
                 }
+        }
+        
+        @Test
+        public void testSelectAreas() throws IOException, SQLException, JSONException {
+                ResultSet resultSet = Dao.getAreas();
+                assertNotNull(resultSet);
         }
 }
