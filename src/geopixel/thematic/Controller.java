@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.TreeSet;
 
@@ -21,8 +23,10 @@ public class Controller {
                                        Integer classesNumber,
                                        String attributeName,
                                        String attributeValue) throws IOException, SQLException, JSONException {
-                                
-                List<Double> ranges = generateRanges();
+                
+                Double[] areasArray = getAreas();
+                List<Double> calculatedRanges = calculateRanges(areasArray, 4);
+                HashMap<String, List<Double>> colors = generateColorsByRange(calculatedRanges);
                 
                 ResultSet geoJsonResultSet = Dao.getFakeQuantil();
                 
@@ -42,7 +46,7 @@ public class Controller {
                 return null;
         }
         
-        public List<Double> generateRanges() throws SQLException, IOException {
+        public Double[] getAreas() throws SQLException, IOException {
                 ResultSet areasResultSet = Dao.getAreas();
                 TreeSet<Double> areas = new TreeSet<Double>();
                 
@@ -52,9 +56,7 @@ public class Controller {
                 }
                 
                 Double[] areasArray = areas.toArray(new Double[areas.size()]);
-                List<Double> calculatedRanges = calculateRanges(areasArray, 4);
-                
-                return calculatedRanges;
+                return areasArray;
         }
         
         public void applyColorToGeoJSON(
@@ -73,19 +75,28 @@ public class Controller {
                 
         }
         
-        public String getColorForProperty(ArrayList<Double> ranges, Double value) {
+        public String getColorForProperty(
+                                          HashMap<String, List<Double>> colors,
+                                          Double value) {
                 String color = "";
-                
-                for (int i = 0; i < ranges.size(); i++) {
-                        Double range1 = ranges.get(i);
-                        Double range2 = ranges.get(i + 1);
+                Iterator colorsIterator = colors.entrySet().iterator();
+
+                while (colorsIterator.hasNext()) {
+                        Map.Entry pair = (Map.Entry) colorsIterator.next();
+                        String tempColor = (String) pair.getKey();
+                        List<Double> ranges = (List<Double>) pair.getValue();
                         
-                        if (value <= range1 && value >= range2) {
-                                color = "RRGGBB";
+                        if(isBetween(ranges.get(0), ranges.get(1), value)){
+                                color = tempColor;
+                                break;
                         }
                 }
                 
                 return color;
+        }
+        
+        public static boolean isBetween(double minor, double major, double numberToCheck) {
+                return major > minor ? numberToCheck > minor && numberToCheck < major : numberToCheck > major && numberToCheck < minor;
         }
         
         public Color generateRandomColor() {

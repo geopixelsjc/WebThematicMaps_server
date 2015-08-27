@@ -3,7 +3,7 @@
  */
 package geopixel.thematic;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -54,6 +54,13 @@ public class TestThematicController {
                 }
                 
                 assertNotNull(colors);
-                
+        }
+        
+        @Test
+        public void testIsBetween() {
+                assertTrue("2 Should be between 1 and 3", controller.isBetween(1, 3, 2));
+                assertTrue("14 Should be between 10 and 20", controller.isBetween(10, 20, 14));
+                assertFalse("1 Should not be between 2 and 4", controller.isBetween(2, 4, 1));
+                assertFalse("4 Should not be between 10 and 20", controller.isBetween(10, 20, 4));
         }
 }

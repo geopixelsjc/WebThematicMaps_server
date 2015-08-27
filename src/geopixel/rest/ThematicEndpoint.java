@@ -1,4 +1,4 @@
-package geopixel.thematic;
+package geopixel.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
