@@ -1,17 +1,23 @@
 package geopixel.rest;
  
+import geopixel.model.external.ChoroplethMapDescription;
 import geopixel.model.external.GenericTable;
+import geopixel.model.external.GeoJsonChoroplethMap;
 import geopixel.model.geolocation.Endereco;
 import geopixel.model.geolocation.Geometry;
 import geopixel.model.hb.dto.AppDicionarioDado;
 import geopixel.model.hb.dto.AppTabela;
 import geopixel.model.hb.dto.AppTema;
 import geopixel.model.legacy.dto.Acesso;
+import geopixel.service.DataBase;
+import geopixel.service.DataBaseService;
 import geopixel.service.TerracoreService;
+import geopixel.thematic.Controller;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -28,146 +34,136 @@ import javax.ws.rs.core.Response;
 
 @Path("/json")
 public class JSONService {
-	
-	@GET
-	@Path("/userTableData")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public GenericTable getPhysicalTable(
-			@QueryParam("tabela_id") int tabela_id,
-			@QueryParam("nomeTabela") String nomeTabela,
-			@QueryParam("conexao") String conn,
-			@QueryParam("limit") int limit,
-			@QueryParam("offset") int offset) {
+	 @GET
+     @Path("/")
+     @Produces(MediaType.APPLICATION_JSON)
+     public Response thematicEndpoint() {
+             String result = "/thematic";
+             return Response.status(200).entity(result).build();
+     }
 
-		GenericTable table = new GenericTable();
-		AppTabela tabela = new AppTabela();
-		tabela.setTblId(tabela_id);
-		tabela.setNome(nomeTabela);
-		tabela.setUrlConexaoBanco(conn);
-			
-		try {
-			table = TerracoreService.getPhysicalTable(tabela, limit, offset);
-		} catch (IOException | SQLException e) {
-			e.printStackTrace();
-		}
-			
-		return table;
-	}
-	
-	@GET
-	@Path("/userTables")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public ArrayList<AppTabela> getUserTable(
-			@QueryParam("theme_id") int theme_id ) {
 
-		ArrayList<AppTabela> tabelas = new ArrayList<AppTabela>();
-
-			try {
-				tabelas = TerracoreService.getUserTableByThemeId(theme_id);
-			} catch (IOException | SQLException e) {
+     @GET
+     @Path("/connect")
+     @Produces(MediaType.APPLICATION_JSON)
+     public Response Connect() {
+     		DataBase db = new DataBase();
+     		Connection conn = null;
+     		db=DataBaseService.getPostgresParameters();
+     		try {
+					conn=DataBaseService.connect(db);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}        
+     	                	
+        return Response.status(200).entity(conn).build();
+     }
+     
+     @GET
+     @Path("/indicators")
+     @Produces(MediaType.APPLICATION_JSON)
+     public Response indicatorsEndpoint(
+     		@QueryParam("table") String table){
+     	
+     	String result = "";
+     	
+     	try {
+				result = Controller.getIndicators(table);
+			} catch (SQLException  | IOException e) {
 				e.printStackTrace();
-			}
+			} 
+     	
+        return Response.status(200).entity(result).build();
+     }
+     
+                     
+/*
+     @GET
+     @Path("/choroplethschema")
+     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+     public String choroplethSchemaEndpoint(               		
+     		@QueryParam("table") String table,
+     		@QueryParam("attribute") String attribute,
+     		@QueryParam("groupingtype") String groupingType,
+     		@QueryParam("nclasses") String nClasses,
+     		@QueryParam("firstcolor") String firstColor,
+     		@QueryParam("lastcolor") String lastColor,
+     		@QueryParam("year")String year){
+     	
+     	ChoroplethMap map= new ChoroplethMap();
+     	map.setAttributeTable(table);
+     	map.setTargetAttribute(attribute);
+     	map.setGroupingType(groupingType);
+     	map.setNClasses(nClasses);
+     	map.setFirstColor(firstColor);
+     	map.setLastColor(lastColor);
+     	map.setYear(year);
+     	
+ 		String schema;
+ 		
+ 		try {
+ 			schema = Controller.getChoroplethSchema(map);
+ 		} catch (IOException | SQLException e) {
+ 			((Throwable) e).printStackTrace();
+ 		}
+  
+            
+             return schema;
+     }
+     */
+/**
+* Creates a Choropleth Map
+* @param table attribute table name
+* @param attribute attribute name which values will drive the map
+* @param geocode key to the associated geographic representation 
+* @param layer geographic representation
+* @param featureCode 
+* @param groupingType "quantiles", "unique value" or slices 
+* @param nclasses number of classes 
+* @param firstColor color of first class
+* @param lastColor color of last class, intermediated classes will use a linear interpolated color on RGB space between first and last colors 
+* @param year
+* @return GeoJson with a correspondent color for each feature
+*/
+@GET
+@Path("/choroplethmap")
+@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+public GeoJsonChoroplethMap ChoroplethMapEndpoint(
+		@QueryParam("table") String table,
+		@QueryParam("attribute") String attribute,
+		@QueryParam("geocode") String geocode, 
+		@QueryParam("layer") String layer,
+		@QueryParam("featurecode") String featureCode,
+		@QueryParam("featurename") String featureName,
+		@QueryParam("box")String box,
+		@QueryParam("groupingtype") String groupingType,
+		@QueryParam("nclasses")String nClasses,
+		@QueryParam("firstcolor")String firstColor,
+		@QueryParam("lastcolor")String lastColor,
+		@QueryParam("year")String year) {
+
+	ChoroplethMapDescription map= new ChoroplethMapDescription();
+	map.setAttributeTable(table);
+	map.setTargetAttribute(attribute);
+	map.setGeocode(geocode);
+	map.setLayer(layer);
+	map.setFeatureCode(featureCode);
+	map.setFeatureName(featureName);
+	map.setBox(box); //if null no box restriction      
+	map.setGroupingType(groupingType);
+	map.setNClasses(nClasses);
+	map.setFirstColor(firstColor);
+	map.setLastColor(lastColor);
+	map.setYear(year);
+
+	GeoJsonChoroplethMap geojson = new GeoJsonChoroplethMap(); 
 	
-		return tabelas;
+	try {
+		 geojson = Controller.getChoroplethMap(map);
+	} catch (IOException | SQLException e) {
+		e.printStackTrace();
 	}
-	
-	@GET
-	@Path("/tableDataDictionaries")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public ArrayList<AppDicionarioDado> UserTableDataDictionaries(
-		@QueryParam("table_id") int table_id) {
-
-			ArrayList<AppDicionarioDado> dicionarioDados = new ArrayList<AppDicionarioDado>();
-			AppTabela tabela = new AppTabela();
-			tabela.setTblId(table_id);
-
-		try {
-			dicionarioDados = TerracoreService.getTableAttributesDD(tabela);
-		} catch (IOException | SQLException e) {
-			e.printStackTrace();
-		}
-	
-		return dicionarioDados;
-	}
-	
-	
-	@GET
-	@Path("/themesByKey/{param}")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public ArrayList<AppTema> getThemeByKey(@PathParam("param") String key) {
-
-		ArrayList<AppTema> temas = new ArrayList<AppTema>();
-
-			try {
-				temas = TerracoreService.getThemesByKey(key);
-			} catch (IOException | SQLException e) {
-				e.printStackTrace();
-			}
-	
-		return temas;
-	}
-	
-	
-	@GET
-	@Path("/checkKeyinSession/{param}")
-	public Response checkKey(@PathParam("param") String key) {
-		boolean valid = false;
-		try {
-			valid = TerracoreService.checkKey(key);
-		} catch (IOException | SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return Response.status(200).entity("check: "+valid).build();
-	}
-	
-	@POST
-	@Path("/checkAccess")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public Acesso getAccsess(@FormParam("login") String login, @FormParam("pass") String password) {
-		Acesso acesso = new Acesso();
-		
-		try {
-			acesso = TerracoreService.login(login, password);
-			//limpa login e senha
-			acesso.setLogin("oculto");
-			acesso.setSenha("oculto");
-		} catch (InvalidKeyException | NoSuchAlgorithmException
-				| NoSuchPaddingException | IOException | SQLException e) {
-			e.printStackTrace();
-		}
-		return acesso;
-	}
-	
-	@GET
-	@Path("/address/{param}")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public ArrayList<Endereco> getAddress(@PathParam("param") String address) {
-
-		ArrayList<Endereco> enderecos = new ArrayList<Endereco>();
-
-		try {
-			enderecos = TerracoreService.execAlphaNumericLocation(address);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return enderecos;
-	}
-
-	@GET
-	@Path("/geom/{param}")
-	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public ArrayList<Geometry> getGeom(@PathParam("param") String address) {
-
-		ArrayList<Geometry> geom = new ArrayList<Geometry>();
-
-		try {
-			geom = TerracoreService.execGeoLocation(address);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return geom;
-	}
+    
+     return geojson;
+}
 }

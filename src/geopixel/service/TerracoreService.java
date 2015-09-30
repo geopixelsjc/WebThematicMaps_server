@@ -117,24 +117,24 @@ public class TerracoreService {
 		return tabelas;
 	}
 	
-	public static GenericTable getPhysicalTable(AppTabela tabela, int limit, int offset) throws IOException, SQLException{
-		String con = tabela.getUrlConexaoBanco();
-		//todo:programacao defensiva
-		String [] param = con.split(";");
-				
-		DataBase dataBase = new DataBase();
-		dataBase.setHost(param[0]);
-		dataBase.setPort(param[1]);
-		dataBase.setDatabase(param[2]);
-		dataBase.setUser(param[3]);
-		dataBase.setPassword(param[4]);
-		// implemetar case p outros bancos
-		dataBase.setDataBaseTypeEnum(DataBaseTypeEnum.POSTGRES);
-		
-		ArrayList<AppDicionarioDado> dicionarioDados = TerracoreService.getTableAttributesDD(tabela);
-		
-		return DataBaseService.getExternalTable(dataBase,tabela.getNome(),limit,offset,dicionarioDados);
-	}
+//	public static GenericTable getPhysicalTable(AppTabela tabela, int limit, int offset) throws IOException, SQLException{
+//		String con = tabela.getUrlConexaoBanco();
+//		//todo:programacao defensiva
+//		String [] param = con.split(";");
+//				
+//		DataBase dataBase = new DataBase();
+//		dataBase.setHost(param[0]);
+//		dataBase.setPort(param[1]);
+//		dataBase.setDatabase(param[2]);
+//		dataBase.setUser(param[3]);
+//		dataBase.setPassword(param[4]);
+//		// implemetar case p outros bancos
+//		dataBase.setDataBaseTypeEnum(DataBaseTypeEnum.POSTGRES);
+//		
+//		ArrayList<AppDicionarioDado> dicionarioDados = TerracoreService.getTableAttributesDD(tabela);
+//		
+//		return DataBaseService.getExternalTable(dataBase,tabela.getNome(),limit,offset,dicionarioDados);
+//	}
 	
 	public static ArrayList<AppDicionarioDado> getTableAttributesDD(AppTabela tabela) throws IOException, SQLException{
 		int id = tabela.getTblId();
@@ -310,8 +310,9 @@ public class TerracoreService {
 	 * streets by street names, and may return batches or streets depending on
 	 * the type of input: numeric or textual or both when separated by commas.
 	 * @throws IOException 
+	 * @throws SQLException 
 	 */
-	public static ArrayList<Endereco> execAlphaNumericLocation(String search) throws IOException {
+	public static ArrayList<Endereco> execAlphaNumericLocation(String search) throws IOException, SQLException {
 		new TerracoreService();
 		String searchText = search.toUpperCase();
 
@@ -406,8 +407,9 @@ public class TerracoreService {
 	 * @param search
 	 * @return
 	 * @throws IOException 
+	 * @throws SQLException 
 	 */
-	public static ArrayList<Geometry> execGeoLocation(String search) throws IOException {
+	public static ArrayList<Geometry> execGeoLocation(String search) throws IOException, SQLException {
 		new TerracoreService();
 		tSpatialColumn = "ST_AsText(geom)";
 		

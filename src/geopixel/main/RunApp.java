@@ -1,12 +1,18 @@
 package geopixel.main;
 
+import geopixel.model.external.JSonUtils;
 import geopixel.model.hb.dto.AppPermissao;
 import geopixel.thematic.CityInformation;
+import geopixel.thematic.Controller;
 import geopixel.thematic.Dao;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.print.DocFlavor.STRING;
 
 
 public class RunApp { 
@@ -132,21 +138,51 @@ public class RunApp {
                 //		}
                 
                 
-                try {
-                        ResultSet result =  Dao.getCityGeoJSON();  
-
-                        while(result.next()){
-                                CityInformation city = new CityInformation();
-                                city.setId(result.getLong(1));
-                        
-                                System.out.println(city);                        
-                        }
-                        
-                } catch (IOException | SQLException e) {
-                        e.printStackTrace();
-                }
-                
-                
+//                try {
+//                        ResultSet result =  Dao.getGeometries(featureTable, featureGeocode, featureName, featureGeometry);
+//
+//                        while(result.next()){
+//                                CityInformation city = new CityInformation();
+//                                city.setId(result.getLong(1));
+//                        
+//                                System.out.println(city);                        
+//                        }
+//                        
+//                } catch (IOException | SQLException e) {
+//                        e.printStackTrace();
+//                }
+        	 
+        	List<String> json = new ArrayList<String>();
+        	json.add("LARANJA");
+        	json.add("AZUL");
+        	json.add("MARROM");
+        	json.add("ROXO");
+        	  	
+        	//System.out.println(JSonUtils.createJsonProperties(json));
+        	//System.out.println(JSonUtils.createJsonArray(json));
+        	String array = JSonUtils.createJsonArray(json);
+        	System.out.println(array);
+        	String properties=JSonUtils.createJsonProperties(json);
+        	System.out.println(properties);
+        	String feature=JSonUtils.createJsonFeature(array,properties);        	
+        	System.out.println(feature);
+        	List<String> fa = new ArrayList<String>();
+        	fa.add(feature);
+        	fa.add(feature);
+        	String featurearray=JSonUtils.createJsonArray(fa);
+        	String map = JSonUtils.createGeoJson(featurearray,"area", "4736");
+        	System.out.println(map);
+        	
+        	System.out.println(Controller.generateColors(4, "#ff0000", "#00ff00"));
+        	
+        	List<Double> range = new ArrayList<Double>();
+        	range.add(10.0);
+        	range.add(20.2);
+        	range.add(30.0);
+        	range.add(40.7);
+        	range.add(50.0);
+        	String legend=Controller.createLegend(range, "#000000", "#ffffff");
+        	System.out.println(legend);
         }
         
 }

@@ -72,7 +72,7 @@ public class DataBaseService {
 		return conn;
 	}
 
-	public static ResultSet buildSelect(String sql,DataBase dataBase) throws IOException {
+	public static ResultSet buildSelect(String sql,DataBase dataBase) throws IOException, SQLException {
 		Connection conn = DataBaseService.connect(dataBase);
 		ResultSet rs = null;
 		try {
@@ -82,77 +82,11 @@ public class DataBaseService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			
+			conn.close();
 		}
 		return rs;
 	}
 	
-	public static GenericTable getExternalTable(DataBase dataBase, String tableName, int limit, int offSet, ArrayList<AppDicionarioDado> dicionarioDados) throws IOException, SQLException{
-		ArrayList<String> data = null;
-		GenericTable table = null; 
-		String collumns ="";
-		boolean isOnlyCollumn = false;
-		StringBuilder auxCollumns = null;
-		String SQLcollums = null; 
-		
-		for (AppDicionarioDado dicionarioDado : dicionarioDados) {
-			
-			if(dicionarioDados.size()<=1){
-				collumns += dicionarioDado.getAtributo();
-				isOnlyCollumn = true;
-				SQLcollums = collumns;
-			}
-			else
-				collumns += dicionarioDado.getAtributo().concat(",");
-		}
-		
-		if(!isOnlyCollumn){
-			//remove ultima virgula.
-			int lastCharIndex = collumns.length()-1;
-			auxCollumns = new StringBuilder(collumns);
-			auxCollumns.setCharAt(lastCharIndex,' ');
-			SQLcollums = auxCollumns.toString();
-		}
-		
-		ResultSet rs = DataBaseService.buildSelect("SELECT "+SQLcollums+" FROM "+ "\"" + tableName+ "\" LIMIT "+limit+" OFFSET "+offSet, dataBase);
 	
-		int colSize = rs.getMetaData().getColumnCount();
-		int jcount = colSize; 
-		
-		data = new ArrayList<String>();
-		StringBuilder jsn = null;
-		
-		String json="[{";
-
-		while (rs.next()) {
-			for (int j = 0; j < colSize; j++) {
-				json += " \""+rs.getMetaData().getColumnLabel(j+1)+"\":"+"\""+String.valueOf(rs.getObject(j+1))+"\",";
-				
-				if(j==(jcount-1)){
-					int jsIndex = json.length()-1;
-					jsn = new StringBuilder(json);
-					jsn.setCharAt(jsIndex,' ');
-					
-					json=jsn.toString();
-					json+="},{";
-				}
-			}
-		}
-			int jsIndex = json.length()-1;
-			StringBuilder js = new StringBuilder(json);
-			js.setCharAt(jsIndex,' ');
-			
-			json = js.toString();
-			
-			int idx = json.length()-2;
-			StringBuilder j = new StringBuilder(json);
-			j.setCharAt(idx,' ');
-			
-			table = new GenericTable();
-			table.setName(tableName);
-			table.setJson(j.toString()+"]");
-		
-		return table;
-	}
 
 }
