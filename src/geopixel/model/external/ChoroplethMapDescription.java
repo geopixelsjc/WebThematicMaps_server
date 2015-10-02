@@ -10,24 +10,29 @@ public class ChoroplethMapDescription {
 	private  String Table;
 	private  String Attribute;
 	private  String GeoCode; 
+	private  String Value;
 	private  String Layer;
 	private  String FeatureCode;
 	private  String FeatureName;
 	private  String Box;	
-	private  String Geometry = "the_geom";			
-	private  String CRS = "4736";
+	private  String Geometry = "geom";			
+	private  String CRS = "-1";
 	private  String GroupingType;
 	private  String NClasses;
 	private  String FirstColor;
 	private  String LastColor;
 	private  String Year;
+	private  String TargetYear;
+	private  String TargetAttribute;
 	
 	public void setAttributeTable(String table){Table=table;}
 	public String getAttributeTable(){return Table;}
-	public void setTargetAttribute(String attribute){Attribute=attribute;}
-	public String getTargetAttribute(){return Attribute;}
+	public void setAttribute(String attribute){Attribute=attribute;}
+	public String getAttribute(){return Attribute;}
 	public void setGeocode(String geocode){GeoCode=geocode;}
 	public String getGeoCode() {return GeoCode;}
+	public void setValue(String value){Value=value;}
+	public String getValue() {return Value;}
 	public void setLayer(String layer){Layer=layer;}
 	public String getLayer(){return Layer;}
 	public void setFeatureCode(String featureCode){FeatureCode=featureCode;}
@@ -44,11 +49,15 @@ public class ChoroplethMapDescription {
 	public String getCRS() {return CRS;}
 	public void setNClasses(String nClasses){NClasses=nClasses;}
 	public String getNClasses(){return NClasses;}
-	public void setFirstColor(String firstColor){FirstColor=firstColor;}
+	public void setFirstColor(String firstColor){FirstColor="#"+firstColor;}
 	public String getFirstColor(){return FirstColor;} 
-	public void setLastColor(String lastColor){LastColor=lastColor;}
+	public void setLastColor(String lastColor){LastColor="#"+lastColor;}
 	public String getLastColor(){return LastColor;}
 	public void setYear(String year){Year=year;}
 	public String getYear() {return Year;}
+	public void setTargetYear(String targetyear){TargetYear=targetyear;}
+	public String getTargetYear() {return TargetYear;}
+	public void setTargetAttribute(String targetattribute){TargetAttribute=targetattribute;}
+	public String getTargetAttribute() {return TargetAttribute;}
 	
 }

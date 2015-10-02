@@ -8,47 +8,47 @@ import java.sql.SQLException;
 
 public class Dao {
 	
-/**
- * Get all indicators available on Indicators Table in data base   
- * @param attributeTable name o Indicators table
- * @return a @link ResultSET containing all indicators (identification, name,unit,description and link to file)
- * @throws IOException
- * @throws SQLException
- */
+	/**
+	 * Get all indicators available on Indicators Table in data base   
+	 * @param attributeTable name o Indicators table
+	 * @return a @link ResultSET containing all indicators (identification, name,unit,description and link to file)
+	 * @throws IOException
+	 * @throws SQLException
+	 */
     public static ResultSet getIndicators(String attributeTable) throws IOException, SQLException {
         String sqlQuery = "select *  from "+ attributeTable;
         ResultSet resultSet = DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
         return resultSet;
     }
     
-/** 
- * Get values of a specific indicator (attribute) and year.    
- * @param attributeTable value table
- * @param attributeName name of column key specifying the desired indicator
- * @param geocode name of column of key to the feature associated
- * @param year selected year for values
- * @return a @link ResultSet with geocode and value columns
- * @throws IOException
- * @throws SQLException
- */
-    public static ResultSet getIndicatorsValues(String attributeTable, String attributeName, String geocode, String year) throws IOException, SQLException {
-        String sqlQuery = "select " + geocode +" ,values from "+ attributeTable +" as value " + 
-        				" where value.name = attributeName and value.year = year" +
-        		        " order by values;";
+	/** 
+	 * Get values of a specific indicator (attribute) and year.    
+	 * @param attributeTable value table
+	 * @param attributeName name of column key specifying the desired indicator
+	 * @param geocode name of column of key to the feature associated
+	 * @param year selected year for values
+	 * @return a @link ResultSet with geocode and value columns
+	 * @throws IOException
+	 * @throws SQLException
+	 */
+    public static ResultSet getIndicatorsValues(String attributeTable, String attributeName, String geocode, String value, String year, String target, String targetYear) throws IOException, SQLException {
+        String sqlQuery = "select " + geocode + " , " + value + " from "+ attributeTable +" as value " + 
+        				" where value." + attributeName + " = '" + target + "' and value." + year + " = " + targetYear + 
+        				" order by value." + value + ";";
         ResultSet resultSet = DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
         return resultSet;
     } 
     
-/**
- * Executes a select from geometry table retriving geocode, feature name and geometry as a Json string.   
- * @param featureTable name of feature table
- * @param featureGeocode geocode column name (feature id)
- * @param featureName name of this feature
- * @param featureGeometry column name of geometry, normally the_geom or geom
- * @return a result set with tree columns (geocode,name, Json geometry)
- * @throws IOException
- * @throws SQLException
- */
+	/**
+	 * Executes a select from geometry table retriving geocode, feature name and geometry as a Json string.   
+	 * @param featureTable name of feature table
+	 * @param featureGeocode geocode column name (feature id)
+	 * @param featureName name of this feature
+	 * @param featureGeometry column name of geometry, normally the_geom or geom
+	 * @return a result set with tree columns (geocode,name, Json geometry)
+	 * @throws IOException
+	 * @throws SQLException
+	 */
     public static ResultSet getGeometries (String featureTable, String featureGeocode,String featureName, String featureGeometry)
     		throws IOException, SQLException {
     	String sqlQuery = "SELECT "
@@ -56,8 +56,8 @@ public class Dao {
     			+ ","
     			+ featureName
     			+","
-    			+ "ST_AsGeoJSON(geometry." + featureGeometry + ")::json As geometry" 
-    			+" from"
+    			+ "ST_AsGeoJSON(" + featureGeometry + ")::json As geometry" 
+    			+" from "
     			+featureTable;
     	
     	ResultSet rs=DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());

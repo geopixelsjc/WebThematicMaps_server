@@ -17,31 +17,31 @@ public class JSonUtils {
 	
 	public String getJson () {return json;}
 	
-/**
- * Creates a Json from  a SQL ResultSET 	
- * @param rs the result set 
- * @return a Json with all rows and attributes in result set
- * @throws SQLException
- */
+	/**
+	 * Creates a Json from  a SQL ResultSET 	
+	 * @param rs the result set 
+	 * @return a Json with all rows and attributes in result set
+	 * @throws SQLException
+	 */
 	public static String resultSet2Json(ResultSet rs) throws SQLException{
 		ResultSetMetaData md;
 		md = rs.getMetaData();
 		int ncolumns = md.getColumnCount();
 		String json = "{";
-		for (int i = 1; i < ncolumns; i++ ) {
+		for (int i = 1; i <= ncolumns; i++ ) {
 			json = json +"\"" + md.getColumnName(i) + "\":\"" + rs.getString(i)+ "\","; 
 		}
 		json = json + "}";
 		return json;			
 	}
 	
-/**
- * Encapsulates a an array of Json features as a GeoJson	
- * @param json a Json array of Json features
- * @param name name Geojson
- * @param crs EPSG number of  cartography projection
- * @return a GeoJson string
- */
+	/**
+	 * Encapsulates a an array of Json features as a GeoJson	
+	 * @param json a Json array of Json features
+	 * @param name name Geojson
+	 * @param crs EPSG number of  cartography projection
+	 * @return a GeoJson string
+	 */
 	public static String createGeoJson(String json, String name,String crs){
 		String geoJson = "{\"name\":\""+ name +"\",\"type\":\"FeatureCollection\"";
 		geoJson = geoJson + ",\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:" + crs + "\"}}";
@@ -62,11 +62,11 @@ public class JSonUtils {
 		return feature;
 	}
 	
-/**
- * creates a Json properties from a list	
- * @param pairs a list of pairs (name, property value)
- * @return a Json properties 
- */
+	/**
+	 * creates a Json properties from a list	
+	 * @param pairs a list of pairs (name, property value)
+	 * @return a Json properties 
+	 */
 	public static String createJsonProperties (List <String> pairs){
 		String p = "\"properties\":{";
 		int i;
@@ -76,11 +76,12 @@ public class JSonUtils {
 		p = p + "\"" + pairs.get(i) + "\":\"" + pairs.get(i+1)+ "\"}";
 		return p;
 	}
-/**
- * Creates a Json array	
- * @param json a list of Json elements
- * @return the Json array
- */
+	
+	/**
+	 * Creates a Json array	
+	 * @param json a list of Json elements
+	 * @return the Json array
+	 */
 	public static String createJsonArray(List <String> json){
 		String array = "[";
 		int i;

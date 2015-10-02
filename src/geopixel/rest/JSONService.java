@@ -34,6 +34,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/json")
 public class JSONService {
+	
 	 @GET
      @Path("/")
      @Produces(MediaType.APPLICATION_JSON)
@@ -111,59 +112,65 @@ public class JSONService {
              return schema;
      }
      */
-/**
-* Creates a Choropleth Map
-* @param table attribute table name
-* @param attribute attribute name which values will drive the map
-* @param geocode key to the associated geographic representation 
-* @param layer geographic representation
-* @param featureCode 
-* @param groupingType "quantiles", "unique value" or slices 
-* @param nclasses number of classes 
-* @param firstColor color of first class
-* @param lastColor color of last class, intermediated classes will use a linear interpolated color on RGB space between first and last colors 
-* @param year
-* @return GeoJson with a correspondent color for each feature
-*/
-@GET
-@Path("/choroplethmap")
-@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-public GeoJsonChoroplethMap ChoroplethMapEndpoint(
-		@QueryParam("table") String table,
-		@QueryParam("attribute") String attribute,
-		@QueryParam("geocode") String geocode, 
-		@QueryParam("layer") String layer,
-		@QueryParam("featurecode") String featureCode,
-		@QueryParam("featurename") String featureName,
-		@QueryParam("box")String box,
-		@QueryParam("groupingtype") String groupingType,
-		@QueryParam("nclasses")String nClasses,
-		@QueryParam("firstcolor")String firstColor,
-		@QueryParam("lastcolor")String lastColor,
-		@QueryParam("year")String year) {
-
-	ChoroplethMapDescription map= new ChoroplethMapDescription();
-	map.setAttributeTable(table);
-	map.setTargetAttribute(attribute);
-	map.setGeocode(geocode);
-	map.setLayer(layer);
-	map.setFeatureCode(featureCode);
-	map.setFeatureName(featureName);
-	map.setBox(box); //if null no box restriction      
-	map.setGroupingType(groupingType);
-	map.setNClasses(nClasses);
-	map.setFirstColor(firstColor);
-	map.setLastColor(lastColor);
-	map.setYear(year);
-
-	GeoJsonChoroplethMap geojson = new GeoJsonChoroplethMap(); 
+	/**
+	* Creates a Choropleth Map
+	* @param table attribute table name
+	* @param attribute attribute name which values will drive the map
+	* @param geocode key to the associated geographic representation 
+	* @param layer geographic representation
+	* @param featureCode 
+	* @param groupingType "quantiles", "unique value" or slices 
+	* @param nclasses number of classes 
+	* @param firstColor color of first class
+	* @param lastColor color of last class, intermediated classes will use a linear interpolated color on RGB space between first and last colors 
+	* @param year
+	* @return GeoJson with a correspondent color for each feature
+	*/
+	@GET
+	@Path("/choroplethmap")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public GeoJsonChoroplethMap ChoroplethMapEndpoint(
+			@QueryParam("table") String table,
+			@QueryParam("attribute") String attribute,
+			@QueryParam("geocode") String geocode, 
+			@QueryParam("value") String value, 
+			@QueryParam("layer") String layer,
+			@QueryParam("featurecode") String featureCode,
+			@QueryParam("featurename") String featureName,
+			@QueryParam("box")String box,
+			@QueryParam("groupingtype") String groupingType,
+			@QueryParam("nclasses")String nClasses,
+			@QueryParam("firstcolor")String firstColor,
+			@QueryParam("lastcolor")String lastColor,
+			@QueryParam("year")String year,
+			@QueryParam("targetyear")String targetYear,
+			@QueryParam("targetattribute")String targetAttribute){
 	
-	try {
-		 geojson = Controller.getChoroplethMap(map);
-	} catch (IOException | SQLException e) {
-		e.printStackTrace();
+		ChoroplethMapDescription map= new ChoroplethMapDescription();
+		map.setAttributeTable(table);
+		map.setAttribute(attribute);
+		map.setGeocode(geocode);
+		map.setValue(value);
+		map.setLayer(layer);
+		map.setFeatureCode(featureCode);
+		map.setFeatureName(featureName);
+		map.setBox(box); //if null no box restriction      
+		map.setGroupingType(groupingType);
+		map.setNClasses(nClasses);
+		map.setFirstColor(firstColor);
+		map.setLastColor(lastColor);
+		map.setYear(year);
+		map.setTargetYear(targetYear);
+		map.setTargetAttribute(targetAttribute);
+	
+		GeoJsonChoroplethMap geojson = new GeoJsonChoroplethMap(); 
+		
+		try {
+			 geojson = Controller.getChoroplethMap(map);
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+	    
+	     return geojson;
 	}
-    
-     return geojson;
-}
 }

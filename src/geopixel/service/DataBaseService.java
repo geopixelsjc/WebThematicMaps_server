@@ -25,8 +25,8 @@ public class DataBaseService {
 		dataBase.setHost("localhost");
 		dataBase.setPort("5432");
 		dataBase.setUser("postgres");
-		dataBase.setPassword("123");
-		dataBase.setDatabase("geo");
+		dataBase.setPassword("postgres");
+		dataBase.setDatabase("Geopixel");
 		dataBase.setDataBaseTypeEnum(DataBaseTypeEnum.POSTGRES);
 		return dataBase;
 	}
@@ -76,7 +76,7 @@ public class DataBaseService {
 		Connection conn = DataBaseService.connect(dataBase);
 		ResultSet rs = null;
 		try {
-			Statement stm = conn.createStatement();
+			Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			rs = stm.executeQuery(sql);
 			
 		} catch (SQLException e) {

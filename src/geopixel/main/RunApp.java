@@ -17,7 +17,7 @@ import javax.print.DocFlavor.STRING;
 
 public class RunApp { 
         
-        public static void main(String[] args){
+        public static void main(String[] args) throws IOException, SQLException{
                 
                 //		AcessoDao acessoDao = new AcessoDao();
                 //		Acesso entidade = new Acesso();
@@ -183,6 +183,24 @@ public class RunApp {
         	range.add(50.0);
         	String legend=Controller.createLegend(range, "#000000", "#ffffff");
         	System.out.println(legend);
+        	
+        	ResultSet teste = Dao.getIndicators("tab_indicadores");
+        	teste.next();
+        	System.out.println(JSonUtils.resultSet2Json(teste));
+        	
+        	System.out.println("//////////////");
+        	
+        	
+        	ResultSet teste2 = Dao.getGeometries("tab_municipios", "cod_ibge", "municipio", "geom");
+        	teste2.next();
+        	System.out.println(teste2.getString(1));
+        	System.out.println(teste2.getString(2));
+        	System.out.println(teste2.getString(3));
+        	
+        	System.out.println(JSonUtils.createJsonFeature(teste2.getString(3), "{[campo:'value']}"));
+        	
+        	
+        	
         }
         
 }
