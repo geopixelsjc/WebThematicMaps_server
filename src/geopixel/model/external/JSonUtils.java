@@ -29,7 +29,11 @@ public class JSonUtils {
 		int ncolumns = md.getColumnCount();
 		String json = "{";
 		for (int i = 1; i <= ncolumns; i++ ) {
-			json = json +"\"" + md.getColumnName(i) + "\":\"" + rs.getString(i)+ "\","; 
+			if(i == ncolumns){
+				json = json +"\"" + md.getColumnName(i) + "\":\"" + rs.getString(i) + "\""; 
+			}else{
+				json = json +"\"" + md.getColumnName(i) + "\":\"" + rs.getString(i)+ "\",";
+			}
 		}
 		json = json + "}";
 		return json;			

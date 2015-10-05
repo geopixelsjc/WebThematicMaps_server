@@ -41,7 +41,7 @@ public class Controller {
 	public static String getIndicators(String table)throws SQLException, IOException {
 				    	    	
 	    ResultSet indicators = Dao.getIndicators(table);
-	           
+	    indicators.next();
 		return JSonUtils.resultSet2Json(indicators);
 	}
 	
