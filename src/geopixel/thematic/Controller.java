@@ -32,8 +32,8 @@ public class Controller {
 	
 		
 	/**
-	 * Retrieve all indicators (atrributes) available to create choropleth maps in data base	
-	 * @param table table that contaisn the indicators names and description
+	 * Retrieves all indicators (attributes) available to create choropleth maps in data base	
+	 * @param table table that contains the indicators names and description
 	 * @return a string as a JSON array containing identification, name, unit, description and link to a file.
 	 * @throws SQLException
 	 * @throws IOException
@@ -73,7 +73,8 @@ public class Controller {
 		GeoJsonChoroplethMap mapGeoJson = new GeoJsonChoroplethMap ();
 		List <Double> ranges = Controller.calculateRanges(map);
 		List<String> colors = Controller.generateColors(ranges.size(),map.getFirstColor(), map.getLastColor());
-		List <String> features = new ArrayList<String>();
+		//List <String> features = new ArrayList<String>();
+		String features = "";
 	
 		//Get attributes
 		HashMap<String,Double> values=Controller.getAttributes(map);
@@ -84,12 +85,12 @@ public class Controller {
 		while (!rs.isAfterLast()){
 			String geocode = rs.getString(1);
 			
-			System.out.println(geocode);
+			//System.out.println(geocode);
 			
 			String name = rs.getString(2);
 			Double value = values.get(geocode);
 			String color ="#ffffff";
-			List <String> properties = new ArrayList<String>();		
+			List <String> properties = new ArrayList<String>();
 			int i=0;
 			if (value != null){
 				for(i=0;i<ranges.size()-1;i++){
@@ -97,7 +98,7 @@ public class Controller {
 						break;
 					} 
 				}
-				if (i==ranges.size()){
+				if (i==ranges.size()-1){
 					i--;
 				}
 				color=colors.get(i);
@@ -109,17 +110,19 @@ public class Controller {
 				properties.add(Double.toString(value));
 				properties.add("color");
 				properties.add(color);
-				
+								
 				String jsonProperties=JSonUtils.createJsonProperties(properties);
 				String jsonGeometry=rs.getString(3);
 				String feature=JSonUtils.createJsonFeature(jsonGeometry, jsonProperties);
-				features.add(feature);
-			}
+				//features.add(feature);
+				features=JSonUtils.addArrayItem(features, feature);
+			}			
 			rs.next();
 			
 		}
-		String jsonFeatureArray=JSonUtils.createJsonArray(features);
-		String j = JSonUtils.createGeoJson(jsonFeatureArray,map.getAttribute(),map.getCRS());		
+		//String jsonFeatureArray=JSonUtils.createJsonArray(features);
+		features=JSonUtils.addArrayItem(features, "");
+		String j = JSonUtils.createGeoJson(features,map.getAttribute(),map.getCRS());		
 		mapGeoJson.setMap(j);
 		String l=Controller.createLegend(ranges,map.getFirstColor(),map.getLastColor());
 		mapGeoJson.setLegend(l);
