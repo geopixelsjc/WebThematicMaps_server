@@ -28,14 +28,10 @@ public class JSonUtils {
 		md = rs.getMetaData();
 		int ncolumns = md.getColumnCount();
 		String json = "{";
-		for (int i = 1; i <= ncolumns; i++ ) {
-			if(i == ncolumns){
-				json = json +"\"" + md.getColumnName(i) + "\":\"" + rs.getString(i) + "\""; 
-			}else{
-				json = json +"\"" + md.getColumnName(i) + "\":\"" + rs.getString(i)+ "\",";
-			}
+		for (int i = 1; i < ncolumns; i++ ) {
+				json = json +"\"" + md.getColumnName(i) + "\":\"" + rs.getString(i)+ "\",";			
 		}
-		json = json + "}";
+		json = json + "\"" + md.getColumnName(ncolumns) + "\":\"" + rs.getString(ncolumns) + "\"}";
 		return json;			
 	}
 	
@@ -95,5 +91,24 @@ public class JSonUtils {
 		array = array +json.get(i)+ "]";
 		return array;
 	}
+/**
+ * Adds a Json item as an array item on an existing Json array, not closed, or an empty json string	
+ * @param jsonArray the existing Json array or an empty string
+ * @param jsonItem the Json array item, if empty the array will be closed inserting a ]
+ * @return the updated Json array
+ */
+	public static String addArrayItem (String jsonArray, String jsonItem){
+		if (jsonArray.length()==0) {
+			jsonArray = "[";		
+		}
+		if (jsonItem.length() == 0){
+			jsonArray=jsonArray+"]";
+		} else {
+			jsonArray=jsonArray+","+ jsonItem;
+		}
+		
+		return jsonArray;
+	}
+	
 
 }
