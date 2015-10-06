@@ -27,12 +27,30 @@ public class JSonUtils {
 		ResultSetMetaData md;
 		md = rs.getMetaData();
 		int ncolumns = md.getColumnCount();
-		String json = "{";
-		for (int i = 1; i < ncolumns; i++ ) {
-				json = json +"\"" + md.getColumnName(i) + "\":\"" + rs.getString(i)+ "\",";			
+
+		if (rs.next()){
+			String json = "[";		
+			while (!rs.isAfterLast()){			
+				json += "{";			
+				for (int i = 1; i <= ncolumns; i++ ) {
+					json += "\"" + md.getColumnName(i) + "\":\"" + rs.getString(i)+ "\"";	
+					if (i < ncolumns  ) {
+						json += ",";
+					} else {
+						json += "}";
+					}
+				}
+				if (!rs.isLast()){
+					json += ",";
+				} else {
+					json += "]";
+				}
+				rs.next();
+			}		
+			return json;
+		} else {
+			return "";
 		}
-		json = json + "\"" + md.getColumnName(ncolumns) + "\":\"" + rs.getString(ncolumns) + "\"}";
-		return json;			
 	}
 	
 	/**
@@ -99,12 +117,13 @@ public class JSonUtils {
  */
 	public static String addArrayItem (String jsonArray, String jsonItem){
 		if (jsonArray.length()==0) {
-			jsonArray = "[";		
-		}
-		if (jsonItem.length() == 0){
-			jsonArray=jsonArray+"]";
-		} else {
-			jsonArray=jsonArray+","+ jsonItem;
+			jsonArray = "["+jsonItem;		
+		} else {		
+			if (jsonItem.length() == 0){
+				jsonArray=jsonArray+"]";
+			} else {
+				jsonArray=jsonArray+","+ jsonItem;
+			}
 		}
 		
 		return jsonArray;
