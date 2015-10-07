@@ -70,16 +70,17 @@ public class Dao {
    	 int count=0;    	
    	 String sqlQuery = "INSERT INTO "
     			+ table 
-    			+ " VALUES ( "     			
+    			+ " (cod_ibge, nome_municipio, nome, ano, valor) "
+    			+ " VALUES ( '"     			
     			+geocode
-    			+","
-    			+cityname     			
-    			+","
+    			+"' , '"
+    			+cityname.replace('\'', ' ')     			
+    			+"' , '"
     			+indicator
-    			+","     			
+    			+"' , "     			
     			+year
-    			+","     			
-    			+value
+    			+" , "     			
+    			+value.replace(',', '.')
     			+")";   	     			
    	
 		count=DataBaseService.buildInsert(sqlQuery, conn);

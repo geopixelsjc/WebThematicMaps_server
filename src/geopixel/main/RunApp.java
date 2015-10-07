@@ -204,7 +204,7 @@ public class RunApp {
         	Connection conn = DataBaseService.connect(dataBase);
         	
     		Charset charset = Charset.forName("UTF-8");
-    		Path file = Paths.get("D:/Geopixel/Ceap", "tab.csv");    		
+    		Path file = Paths.get("D:/", "tab.csv");    		
     		try (BufferedReader reader = Files.newBufferedReader(file, charset)) {
     		    String line = null;
     		    int count=0;
@@ -247,7 +247,7 @@ public class RunApp {
 	    				    		year=years.get(i);
 	    				    		value=dataValues.get(i);
 	    				    		System.out.println(geocode+";"+cityName+";"+indicator+";"+year+";"+value);
-	    				    		
+	    				    		table = "tab_valores_teste";
 	    				    		Dao.insertRow (conn,table, geocode,cityName,indicator, year, value);    		
     				    		}
     				    					    		
