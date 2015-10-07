@@ -2,11 +2,21 @@ package geopixel.main;
 
 import geopixel.model.external.JSonUtils;
 import geopixel.model.hb.dto.AppPermissao;
+import geopixel.service.DataBase;
+import geopixel.service.DataBaseService;
 import geopixel.thematic.CityInformation;
 import geopixel.thematic.Controller;
 import geopixel.thematic.Dao;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -152,55 +162,132 @@ public class RunApp {
 //                        e.printStackTrace();
 //                }
         	 
-        	List<String> json = new ArrayList<String>();
-        	json.add("LARANJA");
-        	json.add("AZUL");
-        	json.add("MARROM");
-        	json.add("ROXO");
-        	  	
-        	//System.out.println(JSonUtils.createJsonProperties(json));
-        	//System.out.println(JSonUtils.createJsonArray(json));
-        	String array = JSonUtils.createJsonArray(json);
-        	System.out.println(array);
-        	String properties=JSonUtils.createJsonProperties(json);
-        	System.out.println(properties);
-        	String feature=JSonUtils.createJsonFeature(array,properties);        	
-        	System.out.println(feature);
-        	List<String> fa = new ArrayList<String>();
-        	fa.add(feature);
-        	fa.add(feature);
-        	String featurearray=JSonUtils.createJsonArray(fa);
-        	String map = JSonUtils.createGeoJson(featurearray,"area", "4736");
-        	System.out.println(map);
+//        	List<String> json = new ArrayList<String>();
+//        	json.add("LARANJA");
+//        	json.add("AZUL");
+//        	json.add("MARROM");
+//        	json.add("ROXO");
+//        	  	
+//        	//System.out.println(JSonUtils.createJsonProperties(json));
+//        	//System.out.println(JSonUtils.createJsonArray(json));
+//        	String array = JSonUtils.createJsonArray(json);
+//        	System.out.println(array);
+//        	String properties=JSonUtils.createJsonProperties(json);
+//        	System.out.println(properties);
+//        	String feature=JSonUtils.createJsonFeature(array,properties);        	
+//        	System.out.println(feature);
+//        	List<String> fa = new ArrayList<String>();
+//        	fa.add(feature);
+//        	fa.add(feature);
+//        	String featurearray=JSonUtils.createJsonArray(fa);
+//        	String map = JSonUtils.createGeoJson(featurearray,"area", "4736");
+//        	System.out.println(map);
+//        	
+//        	System.out.println(Controller.generateColors(4, "#ff0000", "#00ff00"));
+//        	
+//        	List<Double> range = new ArrayList<Double>();
+//        	range.add(10.0);
+//        	range.add(20.2);
+//        	range.add(30.0);
+//        	range.add(40.7);
+//        	range.add(50.0);
+//        	String legend=Controller.createLegend(range, "#000000", "#ffffff");
+//        	System.out.println(legend);
+//        	
+//        	ResultSet teste = Dao.getIndicators("tab_indicadores");
+//        	teste.next();
+//        	System.out.println(JSonUtils.resultSet2Json(teste));
+//        	
+//        	System.out.println("//////////////");
+//        	
+//        	
+//        	ResultSet teste2 = Dao.getGeometries("tab_municipios", "cod_ibge", "municipio", "geom");
+//        	teste2.next();
+//        	System.out.println(teste2.getString(1));
+//        	System.out.println(teste2.getString(2));
+//        	System.out.println(teste2.getString(3));
+//        	
+//        	System.out.println(JSonUtils.createJsonFeature(teste2.getString(3), "{[campo:'value']}"));
         	
-        	System.out.println(Controller.generateColors(4, "#ff0000", "#00ff00"));
+         	DataBase dataBase=DataBaseService.getPostgresParameters();
+        	Connection conn = DataBaseService.connect(dataBase);
         	
-        	List<Double> range = new ArrayList<Double>();
-        	range.add(10.0);
-        	range.add(20.2);
-        	range.add(30.0);
-        	range.add(40.7);
-        	range.add(50.0);
-        	String legend=Controller.createLegend(range, "#000000", "#ffffff");
-        	System.out.println(legend);
-        	
-        	ResultSet teste = Dao.getIndicators("tab_indicadores");
-        	teste.next();
-        	System.out.println(JSonUtils.resultSet2Json(teste));
-        	
-        	System.out.println("//////////////");
-        	
-        	
-        	ResultSet teste2 = Dao.getGeometries("tab_municipios", "cod_ibge", "municipio", "geom");
-        	teste2.next();
-        	System.out.println(teste2.getString(1));
-        	System.out.println(teste2.getString(2));
-        	System.out.println(teste2.getString(3));
-        	
-        	System.out.println(JSonUtils.createJsonFeature(teste2.getString(3), "{[campo:'value']}"));
-        	
-        	
+    		Charset charset = Charset.forName("UTF-8");
+    		Path file = Paths.get("D:/Geopixel/Ceap", "tab.csv");    		
+    		try (BufferedReader reader = Files.newBufferedReader(file, charset)) {
+    		    String line = null;
+    		    int count=0;
+    		    List <String> columns = new ArrayList<String>();
+    		    List <String> years = new ArrayList<String>();
+    		    List <String> indicators = new ArrayList<String>();
+    		    List <String> dataValues = new ArrayList<String>();
+    		    String table="";
+    		    String geocode="";
+    		    String cityName="";
+    		    String indicator="";
+    		    String year="";
+    		    String value="";
+    		    while ((line = reader.readLine()) != null) {
+    		    	count++;
+    		    	switch (count) {
+    			    	case 1:{
+    			    		columns = getTokens(line);	
+    			    		break;
+    			    	}
+    			    	case 2:{
+    			    		years = getTokens(line);
+    			    		break;
+    			    	}
+    			    	case 3:{
+    			    		indicators=getTokens(line);	
+    			    		break;
+    			    	}
+    			    	case 4:{
+    			    		//documentation line
+    			    		break;
+    			    	}
+    			    	default:{
+    			    		dataValues=getTokens(line);
+    			    		for (int i=3;i<columns.size();i++){
+    				    		geocode=dataValues.get(1); 
+    				    		cityName=dataValues.get(2);
+    				    		indicator=indicators.get(i);
+    				    		if (indicator.length()>0){
+	    				    		year=years.get(i);
+	    				    		value=dataValues.get(i);
+	    				    		System.out.println(geocode+";"+cityName+";"+indicator+";"+year+";"+value);
+	    				    		
+	    				    		Dao.insertRow (conn,table, geocode,cityName,indicator, year, value);    		
+    				    		}
+    				    					    		
+    			    		}
+    			    		break;//f	
+    			    	}//def  	
+    		    	}//sw
+    		    }//wh
+    		} catch (IOException x) {
+    		    System.err.format("IOException: %s%n", x);
+    		}	 	
         	
         }
+        public static List<String> getTokens(String line){
+    		List<String> tokens = new ArrayList<String>();
+    		int first=0;		
+    		int last=0;
+    		for (int j=0; j<line.length();j++){
+    			if (Character.toString(line.charAt(j)).equals(";")){
+    				//last=j-1;
+    				last=j;
+    				if (last<first){
+    					tokens.add("");
+    				}
+    				else{
+    					tokens.add(line.substring(first,last));    					
+    				}				
+    				first=j+1;				
+    			}
+    		}
+    		return tokens;	
+    	}
         
 }

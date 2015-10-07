@@ -3,6 +3,7 @@ package geopixel.thematic;
 import geopixel.service.DataBaseService;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -63,6 +64,31 @@ public class Dao {
     	ResultSet rs=DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
     	return rs;
     }
+    
+    public static int insertRow(Connection conn,String table,String geocode, String cityname,String indicator,String year,String value)
+    		throws IOException, SQLException {
+   	 int count=0;    	
+   	 String sqlQuery = "INSERT INTO "
+    			+ table 
+    			+ " VALUES ( "     			
+    			+geocode
+    			+","
+    			+cityname     			
+    			+","
+    			+indicator
+    			+","     			
+    			+year
+    			+","     			
+    			+value
+    			+")";   	     			
+   	
+		count=DataBaseService.buildInsert(sqlQuery, conn);
+	
+	
+    	
+   	 return count;
+   }
+}
         
 /*       
 	public static ResultSet getCityGeoJSON() throws IOException, SQLException{
@@ -157,4 +183,3 @@ public class Dao {
             + ") as fc";	
             */
 
-}

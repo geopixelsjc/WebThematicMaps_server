@@ -87,6 +87,18 @@ public class DataBaseService {
 		return rs;
 	}
 	
+	public static int buildInsert(String sql,Connection conn) throws IOException, SQLException {		
+		int count=0;		
+		try {
+			Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			count = stm.executeUpdate(sql);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return count;
+	}
+	
 	
 
 }
