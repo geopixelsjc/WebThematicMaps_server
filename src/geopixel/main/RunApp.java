@@ -1,28 +1,19 @@
 package geopixel.main;
 
-import geopixel.model.external.JSonUtils;
-import geopixel.model.hb.dto.AppPermissao;
 import geopixel.service.DataBase;
 import geopixel.service.DataBaseService;
-import geopixel.thematic.CityInformation;
-import geopixel.thematic.Controller;
 import geopixel.thematic.Dao;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.print.DocFlavor.STRING;
 
 
 public class RunApp { 
