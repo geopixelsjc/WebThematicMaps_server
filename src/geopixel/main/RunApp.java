@@ -204,7 +204,7 @@ public class RunApp {
         	Connection conn = DataBaseService.connect(dataBase);
         	
     		Charset charset = Charset.forName("UTF-8");
-    		Path file = Paths.get("D:/", "tab.csv");    		
+    		Path file = Paths.get("D:/", "Insumos.csv");    		
     		try (BufferedReader reader = Files.newBufferedReader(file, charset)) {
     		    String line = null;
     		    int count=0;
@@ -212,7 +212,9 @@ public class RunApp {
     		    List <String> years = new ArrayList<String>();
     		    List <String> indicators = new ArrayList<String>();
     		    List <String> dataValues = new ArrayList<String>();
+    		    
     		    String table="";
+    		    String id = "";
     		    String geocode="";
     		    String cityName="";
     		    String indicator="";
@@ -240,7 +242,8 @@ public class RunApp {
     			    	default:{
     			    		dataValues=getTokens(line);
     			    		for (int i=3;i<columns.size();i++){
-    				    		geocode=dataValues.get(1); 
+    			    			id=dataValues.get(0); 
+    			    			geocode=dataValues.get(1); 
     				    		cityName=dataValues.get(2);
     				    		indicator=indicators.get(i);
     				    		if (indicator.length()>0){
@@ -248,7 +251,7 @@ public class RunApp {
 	    				    		value=dataValues.get(i);
 	    				    		System.out.println(geocode+";"+cityName+";"+indicator+";"+year+";"+value);
 	    				    		table = "tab_valores_teste";
-	    				    		Dao.insertRow (conn,table, geocode,cityName,indicator, year, value);    		
+	    				    		Dao.insertRow (conn, table, id, geocode, cityName, indicator, year, value);    		
     				    		}
     				    					    		
     			    		}

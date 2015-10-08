@@ -65,23 +65,25 @@ public class Dao {
     	return rs;
     }
     
-    public static int insertRow(Connection conn,String table,String geocode, String cityname,String indicator,String year,String value)
+    public static int insertRow(Connection conn,String table, String id, String geocode, String cityname, String indicator, String year, String value)
     		throws IOException, SQLException {
    	 int count=0;    	
    	 String sqlQuery = "INSERT INTO "
     			+ table 
-    			+ " (cod_ibge, nome_municipio, nome, ano, valor) "
-    			+ " VALUES ( '"     			
-    			+geocode
-    			+"' , '"
-    			+cityname.replace('\'', ' ')     			
-    			+"' , '"
-    			+indicator
-    			+"' , "     			
-    			+year
-    			+" , "     			
-    			+value.replace(',', '.')
-    			+")";   	     			
+    			+ " (identificador, cod_ibge, nome_municipio, nome, ano, valor) "
+    			+ " VALUES ( '"
+    			+ id
+    			+ "' , '"
+    			+ geocode
+    			+ "' , '"
+    			+ cityname.replace('\'', ' ')     			
+    			+ "' , '"
+    			+ indicator
+    			+ "' , "     			
+    			+ year
+    			+ " , "     			
+    			+ value.replace(',', '.')
+    			+ ")";   	     			
    	
 		count=DataBaseService.buildInsert(sqlQuery, conn);
 	
