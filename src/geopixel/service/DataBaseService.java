@@ -26,7 +26,10 @@ public class DataBaseService {
 		dataBase.setPort("5432");
 		dataBase.setUser("postgres");
 		dataBase.setPassword("postgres");
+		//Teste
 		dataBase.setDatabase("Geopixel");
+		//Deploy
+		//dataBase.setDatabase("Observatorio");
 		dataBase.setDataBaseTypeEnum(DataBaseTypeEnum.POSTGRES);
 		return dataBase;
 	}
@@ -90,7 +93,10 @@ public class DataBaseService {
 	public static int buildInsert(String sql,Connection conn) throws IOException, SQLException {		
 		int count=0;		
 		try {
-			Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			//Para insert
+			//Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			//Somente select
+			Statement stm = conn.createStatement();
 			count = stm.executeUpdate(sql);
 			
 		} catch (SQLException e) {

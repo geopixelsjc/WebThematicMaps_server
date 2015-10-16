@@ -7,10 +7,26 @@ import geopixel.model.external.JSonUtils;
 import java.awt.Color;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.TreeSet;
+
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Controller {
 	
@@ -25,7 +41,7 @@ public class Controller {
 	public static String getIndicators(String table)throws SQLException, IOException {
 				    	    	
 	    ResultSet indicators = Dao.getIndicators(table);
-	    indicators.next();
+
 		return JSonUtils.resultSet2Json(indicators);
 	}
 	
