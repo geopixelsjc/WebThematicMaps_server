@@ -102,25 +102,26 @@ public class Controller {
 					i--;
 				}
 				color=colors.get(i);
-				properties.add("geocode");
-				properties.add(geocode);
-				properties.add("name");
-				properties.add(name);
-				properties.add("value");
-				properties.add(Double.toString(value));
-				properties.add("color");
-				properties.add(color);
-								
-				String jsonProperties=JSonUtils.createJsonProperties(properties);
-				String jsonGeometry=rs.getString(3);
-				String feature=JSonUtils.createJsonFeature(jsonGeometry, jsonProperties);
-				//features.add(feature);
-				features=JSonUtils.addArrayItem(features, feature);
-			}			
-			rs.next();
-			
+			} else {
+				color = "#ffffff";
+			}
+			properties.add("geocode");
+			properties.add(geocode);
+			properties.add("name");
+			properties.add(name);
+			properties.add("value");
+			properties.add(Double.toString(value));
+			properties.add("color");
+			properties.add(color);
+							
+			String jsonProperties=JSonUtils.createJsonProperties(properties);
+			String jsonGeometry=rs.getString(3);
+			String feature=JSonUtils.createJsonFeature(jsonGeometry, jsonProperties);			
+			features=JSonUtils.addArrayItem(features, feature);
+						
+			rs.next();			
 		}
-		//String jsonFeatureArray=JSonUtils.createJsonArray(features);
+		
 		features=JSonUtils.addArrayItem(features, "");
 		String j = JSonUtils.createGeoJson(features,map.getAttribute(),map.getCRS());		
 		mapGeoJson.setMap(j);

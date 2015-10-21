@@ -23,18 +23,21 @@ public class Dao {
     }
     
 	/** 
-	 * Get values of a specific indicator (attribute) and year.    
+	 * Retrieves, non zero, values of a specific indicator (attribute) and year.    
 	 * @param attributeTable value table
 	 * @param attributeName name of column key specifying the desired indicator
 	 * @param geocode name of column of key to the feature associated
-	 * @param year selected year for values
+	 * @param value values column name
+	 * @param year year column name
+	 * @param target indicator to be retrieved
+	 * @param targetyear year to be retrieved
 	 * @return a @link ResultSet with geocode and value columns
 	 * @throws IOException
 	 * @throws SQLException
 	 */
     public static ResultSet getIndicatorsValues(String attributeTable, String attributeName, String geocode, String value, String year, String target, String targetYear) throws IOException, SQLException {
         String sqlQuery = "select " + geocode + " , " + value + " from "+ attributeTable +" as value " + 
-        				" where value." + attributeName + " = '" + target + "' and value." + year + " = " + targetYear + 
+        				" where value." + attributeName + " = '" + target + "' and value." + year + " = " + targetYear + " value."+ value + " > 0" +
         				" order by value." + value + ";";
         ResultSet resultSet = DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
         return resultSet;
