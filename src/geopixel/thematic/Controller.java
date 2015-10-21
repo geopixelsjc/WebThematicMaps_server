@@ -92,6 +92,7 @@ public class Controller {
 			String color ="#ffffff";
 			List <String> properties = new ArrayList<String>();
 			int i=0;
+			
 			if (value != null){
 				for(i=0;i<ranges.size()-1;i++){
 					if ((value >= ranges.get(i))&& (value < ranges.get(i+1))){
@@ -110,7 +111,12 @@ public class Controller {
 			properties.add("name");
 			properties.add(name);
 			properties.add("value");
-			properties.add(Double.toString(value));
+			if (value == null){
+				properties.add("0.0");
+				value = 0.0;
+			}else{
+				properties.add(Double.toString(value));
+			}
 			properties.add("color");
 			properties.add(color);
 							
