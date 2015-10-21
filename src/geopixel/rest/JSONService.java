@@ -1,32 +1,16 @@
 package geopixel.rest;
  
 import geopixel.model.external.ChoroplethMapDescription;
-import geopixel.model.external.GenericTable;
 import geopixel.model.external.GeoJsonChoroplethMap;
-import geopixel.model.geolocation.Endereco;
-import geopixel.model.geolocation.Geometry;
-import geopixel.model.hb.dto.AppDicionarioDado;
-import geopixel.model.hb.dto.AppTabela;
-import geopixel.model.hb.dto.AppTema;
-import geopixel.model.legacy.dto.Acesso;
 import geopixel.service.DataBase;
 import geopixel.service.DataBaseService;
-import geopixel.service.TerracoreService;
 import geopixel.thematic.Controller;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.crypto.NoSuchPaddingException;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;

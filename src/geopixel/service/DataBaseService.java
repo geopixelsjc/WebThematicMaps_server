@@ -1,8 +1,6 @@
 package geopixel.service; 
 
 import geopixel.enumeration.DataBaseTypeEnum;
-import geopixel.model.external.GenericTable;
-import geopixel.model.hb.dto.AppDicionarioDado;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,10 +8,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 
 public class DataBaseService {
 
@@ -93,9 +87,9 @@ public class DataBaseService {
 	public static int buildInsert(String sql,Connection conn) throws IOException, SQLException {		
 		int count=0;		
 		try {
-			//Para insert
-			//Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			//Somente select
+			//Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			//Para insert
 			Statement stm = conn.createStatement();
 			count = stm.executeUpdate(sql);
 			

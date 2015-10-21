@@ -1,7 +1,5 @@
 package geopixel.service;
  
-import geopixel.enumeration.DataBaseTypeEnum;
-import geopixel.model.external.GenericTable;
 import geopixel.model.geolocation.Endereco;
 import geopixel.model.geolocation.Geometry;
 import geopixel.model.hb.dto.AppDicionarioDado;
@@ -23,8 +21,6 @@ import java.util.ArrayList;
 
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JOptionPane;
-
-import org.codehaus.jettison.json.JSONException;
 
 public class TerracoreService {
 
