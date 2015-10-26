@@ -7,29 +7,12 @@ import geopixel.model.external.JSonUtils;
 import java.awt.Color;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.TreeSet;
-
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Controller {
-	
 		
 	/**
 	 * Retrieves all indicators (attributes) available to create choropleth maps in data base	
@@ -43,6 +26,20 @@ public class Controller {
 	    ResultSet indicators = Dao.getIndicators(table);
 
 		return JSonUtils.resultSet2Json(indicators);
+	}
+	
+	/**
+	 * Retrieves the years with data for a specific indicator (attribute)
+	 * @param map a Choropleth Map description , which defines:attribute table, attribute column name, target attribute and year column name
+	 * @return a string as a Json array containing years
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	public static String getYears(ChoroplethMapDescription map)throws SQLException, IOException {
+    	
+	    ResultSet years = Dao.getYears(map.getAttributeTable(), map.getAttribute(),map.getTargetAttribute(),map.getValue(),map.getYear());
+
+		return JSonUtils.resultSet2Json(years);
 	}
 	
 	/*
@@ -72,7 +69,7 @@ public class Controller {
 	public static GeoJsonChoroplethMap getChoroplethMap(ChoroplethMapDescription map)throws SQLException, IOException{
 		GeoJsonChoroplethMap mapGeoJson = new GeoJsonChoroplethMap ();
 		List <Double> ranges = Controller.calculateRanges(map);
-		List<String> colors = Controller.generateColors(ranges.size(),map.getFirstColor(), map.getLastColor());
+		List<String> colors = Controller.generateColors(Integer.valueOf(map.getNClasses()),map.getFirstColor(), map.getLastColor());
 		//List <String> features = new ArrayList<String>();
 		String features = "";
 	
@@ -105,18 +102,14 @@ public class Controller {
 				color=colors.get(i);
 			} else {
 				color = "#ffffff";
+				value = 0.0;
 			}
 			properties.add("geocode");
 			properties.add(geocode);
 			properties.add("name");
 			properties.add(name);
 			properties.add("value");
-			if (value == null){
-				properties.add("0.0");
-				value = 0.0;
-			}else{
-				properties.add(Double.toString(value));
-			}
+			properties.add(Double.toString(value));			
 			properties.add("color");
 			properties.add(color);
 							

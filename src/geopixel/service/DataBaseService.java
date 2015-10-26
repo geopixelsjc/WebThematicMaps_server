@@ -21,9 +21,9 @@ public class DataBaseService {
 		dataBase.setUser("postgres");
 		dataBase.setPassword("postgres");
 		//Teste
-		dataBase.setDatabase("Observatorio2");
+		//dataBase.setDatabase("Observatorio2");
 		//Deploy
-		//dataBase.setDatabase("Observatorio");
+		dataBase.setDatabase("observatorio");
 		dataBase.setDataBaseTypeEnum(DataBaseTypeEnum.POSTGRES);
 		return dataBase;
 	}

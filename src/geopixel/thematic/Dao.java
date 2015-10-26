@@ -10,17 +10,37 @@ import java.sql.SQLException;
 public class Dao {
 	
 	/**
-	 * Get all indicators available on Indicators Table in data base   
+	 * Gets all indicators available on Indicators Table in data base   
 	 * @param attributeTable name o Indicators table
 	 * @return a @link ResultSET containing all indicators (identification, name,unit,description and link to file)
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-    public static ResultSet getIndicators(String attributeTable) throws IOException, SQLException {
-        String sqlQuery = "select *  from "+ attributeTable;
+    public static ResultSet getIndicators(String indicatorsTable) throws IOException, SQLException {
+
+        String sqlQuery = "select * from " + indicatorsTable + "order by nome";
         ResultSet resultSet = DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
         return resultSet;
     }
+    
+    /**
+     * Gets all years with non zero values for a specific indicator (attribute)
+     * @param attributeTable name of table with indicators values
+     * @param attributeName column name where indicators are stored
+     * @param targetAttribute the specific value of the indicator
+     * @param values column name where values are stored
+     * @param years column name where years are stored
+     * @return a result set with valid years
+     * @throws IOException
+     * @throws SQLException
+     */
+    public static ResultSet getYears(String attributeTable, String attributeName, String targetAttribute,String values, String years ) throws IOException, SQLException{
+        String sqlQuery = "select " + years + " from "+ attributeTable + 
+        		" where " + attributeName + " = " + "'" + targetAttribute +"'" + " and " + values + " > 0" +
+        		" group by " + years + " order by " + years;
+        ResultSet resultSet = DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
+        return resultSet;
+    } 
     
 	/** 
 	 * Retrieves, non zero, values of a specific indicator (attribute) and year.    
@@ -41,8 +61,8 @@ public class Dao {
         				" order by value." + value + ";";
         ResultSet resultSet = DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
         return resultSet;
-    } 
-    
+    }     
+     
 	/**
 	 * Executes a select from geometry table retriving geocode, feature name and geometry as a Json string.   
 	 * @param featureTable name of feature table

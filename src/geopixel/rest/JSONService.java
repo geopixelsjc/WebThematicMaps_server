@@ -61,6 +61,34 @@ public class JSONService {
         return Response.status(200).entity(result).build();
      }
      
+     @GET
+     @Path("/years")
+     @Produces(MediaType.APPLICATION_JSON)
+     public Response indicatorsEndpoint(
+     		@QueryParam("table") String table,
+     		@QueryParam("attribute") String attribute,
+     		@QueryParam("value") String value, 
+			@QueryParam("year")String year,
+			@QueryParam("targetattribute")String targetAttribute){
+				
+		ChoroplethMapDescription map= new ChoroplethMapDescription();
+		map.setAttributeTable(table);
+		map.setAttribute(attribute);
+		map.setValue(value);				
+		map.setYear(year);
+		map.setTargetAttribute(targetAttribute);
+
+     	String result = "";
+     	
+     	try {
+				result = Controller.getYears(map);
+			} catch (SQLException  | IOException e) {
+				e.printStackTrace();
+			} 
+     	
+        return Response.status(200).entity(result).build();
+     }
+     
                      
 /*
      @GET
