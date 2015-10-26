@@ -16,9 +16,9 @@ public class Dao {
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-    public static ResultSet getIndicators(String indicatorsTable) throws IOException, SQLException {
+    public static ResultSet getIndicators(String indicatorsTable, String indicator) throws IOException, SQLException {
 
-        String sqlQuery = "select * from " + indicatorsTable + "order by nome";
+        String sqlQuery = "select * from " + indicatorsTable + " order by " + indicator;
         ResultSet resultSet = DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
         return resultSet;
     }

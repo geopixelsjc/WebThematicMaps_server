@@ -48,12 +48,13 @@ public class JSONService {
      @Path("/indicators")
      @Produces(MediaType.APPLICATION_JSON)
      public Response indicatorsEndpoint(
-     		@QueryParam("table") String table){
+     		@QueryParam("table") String table,
+     		@QueryParam("indicator")String indicator){
      	
      	String result = "";
      	
      	try {
-				result = Controller.getIndicators(table);
+				result = Controller.getIndicators(table,indicator);
 			} catch (SQLException  | IOException e) {
 				e.printStackTrace();
 			} 

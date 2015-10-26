@@ -21,9 +21,9 @@ public class Controller {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	public static String getIndicators(String table)throws SQLException, IOException {
+	public static String getIndicators(String table,String indicator )throws SQLException, IOException {
 				    	    	
-	    ResultSet indicators = Dao.getIndicators(table);
+	    ResultSet indicators = Dao.getIndicators(table,indicator);
 
 		return JSonUtils.resultSet2Json(indicators);
 	}
