@@ -57,7 +57,7 @@ public class Dao {
 	 */
     public static ResultSet getIndicatorsValues(String attributeTable, String attributeName, String geocode, String value, String year, String target, String targetYear) throws IOException, SQLException {
         String sqlQuery = "select " + geocode + " , " + value + " from "+ attributeTable +" as value " + 
-        				" where value." + attributeName + " = '" + target + "' and value." + year + " = " + targetYear + " and value."+ value + " > 0" +
+        				" where value." + attributeName + " = '" + target + "' and value." + year + " = '" + targetYear + "' and value."+ value + " > 0" +
         				" order by value." + value + ";";
         ResultSet resultSet = DataBaseService.buildSelect(sqlQuery, DataBaseService.getPostgresParameters());
         return resultSet;
@@ -102,9 +102,9 @@ public class Dao {
     			+ cityname.replace('\'', ' ')     			
     			+ "' , '"
     			+ indicator
-    			+ "' , "     			
+    			+ "' , '"     			
     			+ year
-    			+ " , "     			
+    			+ "' , "     			
     			+ value.replace(',', '.')
     			+ ")";   	     			
    	
